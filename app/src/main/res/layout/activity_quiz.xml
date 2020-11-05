@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout  xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="question"
+            type="com.example.android.wordgame.models.Question" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".ui.QuizScreen.QuizActivity">
+
+        <Button
+            android:id="@+id/buttonChoiceA"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="76dp"
+            android:text="@{question.getShuffledAnswers().get(0)}"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonChoiceB"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/buttonChoiceB"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="A"/>
+
+        <Button
+            android:id="@+id/buttonChoiceB"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="188dp"
+            android:text="@{question.getShuffledAnswers().get(1)}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.503"
+            app:layout_constraintStart_toEndOf="@+id/buttonChoiceA"
+            tools:text="B"/>
+
+        <Button
+            android:id="@+id/buttonChoiceC"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{question.getShuffledAnswers().get(2)}"
+            app:layout_constraintBottom_toBottomOf="@+id/buttonChoiceD"
+            app:layout_constraintStart_toStartOf="@+id/buttonChoiceA"
+            app:layout_constraintTop_toBottomOf="@+id/buttonChoiceA"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="C"/>
+
+        <Button
+            android:id="@+id/buttonChoiceD"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="68dp"
+            android:text="@{question.getShuffledAnswers().get(3)}"
+            app:layout_constraintEnd_toEndOf="@+id/buttonChoiceB"
+            app:layout_constraintTop_toBottomOf="@+id/buttonChoiceB"
+            tools:text="D"/>
+
+        <TextView
+            android:id="@+id/textViewQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="144dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.493"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="who invented the light?"
+            android:text="@{question.getQuestion()}"
+            />
+
+        <TextView
+            android:id="@+id/textViewTimer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="36dp"
+            android:layout_marginTop="32dp"
+            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="10" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
