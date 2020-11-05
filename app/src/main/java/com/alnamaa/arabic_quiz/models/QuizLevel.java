@@ -1,4 +1,4 @@
-package com.example.android.wordgame.models;
+package com.alnamaa.arabic_quiz.models;
 
 public class QuizLevel {
     private int totalScore;

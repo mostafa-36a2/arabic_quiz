@@ -1,4 +1,4 @@
-package com.example.android.wordgame.ui.QuizScreen;
+package com.alnamaa.arabic_quiz.ui.QuizScreen;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,9 +13,9 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.android.wordgame.R;
-import com.example.android.wordgame.databinding.ActivityQuizBinding;
-import com.example.android.wordgame.models.Question;
+import com.alnamaa.arabic_quiz.R;
+import com.alnamaa.arabic_quiz.databinding.ActivityQuizBinding;
+import com.alnamaa.arabic_quiz.models.Question;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
 
