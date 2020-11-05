@@ -1,4 +1,4 @@
-package com.example.android.wordgame.ui.levelsListScreen;
+package com.alnamaa.arabic_quiz.ui.levelsListScreen;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.android.wordgame.adapters.QuizLevelsAdapter;
-import com.example.android.wordgame.R;
-import com.example.android.wordgame.models.QuizLevel;
+import com.alnamaa.arabic_quiz.adapters.QuizLevelsAdapter;
+import com.alnamaa.arabic_quiz.R;
+import com.alnamaa.arabic_quiz.models.QuizLevel;
 
 import java.util.List;
 
 public class LevelsActivity extends AppCompatActivity {
 
-    private LevelsActivityViewModel viewModel;
+    private com.alnamaa.arabic_quiz.ui.levelsListScreen.LevelsActivityViewModel viewModel;
 
     private RecyclerView recyclerViewLevels;
 
@@ -32,7 +32,7 @@ public class LevelsActivity extends AppCompatActivity {
     }
 
     private void setUpViewModel(){
-        viewModel = new ViewModelProvider(this).get(LevelsActivityViewModel.class);
+        viewModel = new ViewModelProvider(this).get(com.alnamaa.arabic_quiz.ui.levelsListScreen.LevelsActivityViewModel.class);
     }
 
     private void setLevels(){

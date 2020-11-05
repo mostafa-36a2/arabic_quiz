@@ -1,4 +1,4 @@
-package com.example.android.wordgame.ui.QuizScreen;
+package com.alnamaa.arabic_quiz.ui.QuizScreen;
 
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
@@ -11,8 +11,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.android.wordgame.models.Question;
-import com.example.android.wordgame.repositories.Repository;
+import com.alnamaa.arabic_quiz.models.Question;
+import com.alnamaa.arabic_quiz.repositories.Repository;
 
 import java.util.Collections;
 import java.util.List;

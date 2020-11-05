@@ -1,4 +1,4 @@
-package com.example.android.wordgame.adapters;
+package com.alnamaa.arabic_quiz.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,9 +9,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android.wordgame.R;
-import com.example.android.wordgame.models.QuizLevel;
-import com.example.android.wordgame.ui.QuizScreen.QuizActivity;
+import com.alnamaa.arabic_quiz.R;
+import com.alnamaa.arabic_quiz.models.QuizLevel;
+import com.alnamaa.arabic_quiz.ui.QuizScreen.QuizActivity;
 
 import java.util.List;
 

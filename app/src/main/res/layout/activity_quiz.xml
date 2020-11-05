@@ -4,7 +4,7 @@
     <data>
         <variable
             name="question"
-            type="com.example.android.wordgame.models.Question" />
+            type="com.alnamaa.arabic_quiz.models.Question" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

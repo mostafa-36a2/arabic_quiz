@@ -1,12 +1,12 @@
-package com.example.android.wordgame.ui.levelsListScreen;
+package com.alnamaa.arabic_quiz.ui.levelsListScreen;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
-import com.example.android.wordgame.Dummy;
-import com.example.android.wordgame.models.QuizLevel;
-import com.example.android.wordgame.repositories.Repository;
+import com.alnamaa.arabic_quiz.Dummy;
+import com.alnamaa.arabic_quiz.models.QuizLevel;
+import com.alnamaa.arabic_quiz.repositories.Repository;
 
 import java.util.List;
 

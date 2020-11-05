@@ -1,8 +1,8 @@
-package com.example.android.wordgame.repositories;
+package com.alnamaa.arabic_quiz.repositories;
 
-import com.example.android.wordgame.Dummy;
-import com.example.android.wordgame.models.Question;
-import com.example.android.wordgame.models.QuizLevel;
+import com.alnamaa.arabic_quiz.Dummy;
+import com.alnamaa.arabic_quiz.models.Question;
+import com.alnamaa.arabic_quiz.models.QuizLevel;
 
 import java.util.List;
 
