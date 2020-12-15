@@ -10,9 +10,17 @@ public class Dummy {
     public static List<Question> dummyQuestion(){
         List<Question> questions = new ArrayList<>();
 
-        questions.add(new Question("who are you","CORRECT","BB","CC","D",'a'));
-        questions.add(new Question("who made this","1","CORRECT","3","4",'b'));
-        questions.add(new Question("what are you doing","hi","df","sd","CORRECT",'d'));
+
+        questions.add(new Question("who are you",
+                "CORRECT","BB","CC","D",
+                'a'));
+        questions.add(new Question("who made this",
+                "1","CORRECT","3","4",
+                'b'));
+        questions.add(new Question("what are you doing",
+                "hi","df","sd","CORRECT",
+                'd'));
+
 
         return questions;
     }
