@@ -81,13 +81,15 @@ public class Connectivity {
                 }
 
                 try {
-                    httpURLConnection.setRequestMethod("POST");
+                    httpURLConnection.setRequestMethod("GET");
                 } catch (ProtocolException e) {
                     reportError(mURL,"ProtocolException  in httpURLConnection.setRequestMethod(\"POST\");", e);
                     return null;
                 }
                 httpURLConnection.setRequestProperty("Content-Type", "application/json; utf-8");
                 httpURLConnection.setRequestProperty("Accept", "application/json");
+                httpURLConnection.setConnectTimeout(1000 * 2);
+                httpURLConnection.setReadTimeout(1000 * 5);
                 httpURLConnection.setDoOutput(true);
                 if(jsonInputString!=null)
                 {
@@ -124,6 +126,7 @@ public class Connectivity {
                     try {
                         os.close();
                     } catch (IOException e) {
+                        e.printStackTrace();
                         reportError(mURL,"IOException  os.close();", e);
                         return null;
                     }
@@ -132,6 +135,7 @@ public class Connectivity {
                 try {
                     httpURLConnection.connect();
                 } catch (IOException e) {
+                    e.printStackTrace();
                     reportError(mURL,"IOException httpURLConnection.connect();", e);
                     return null;
                 }
