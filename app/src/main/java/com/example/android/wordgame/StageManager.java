@@ -2,9 +2,12 @@ package com.example.android.wordgame;
 
 import com.example.android.wordgame.models.Stage;
 
+import java.util.List;
+
 public class StageManager {
-    private QuestionManager manager;
-    private Stage stage;
+    private QuestionManager questionManager;
+    private List<Stage> stages;
+    private int activeStageIndex ;
 
 
     public boolean isStageLocked(){
@@ -12,7 +15,7 @@ public class StageManager {
         return false;
     }
     public int getStageID(){
-        return stage.getStageID();
+        return getActiveStage().getStageID();
     }
 
     public void startQuiz(int numOfQuestions){
@@ -31,5 +34,9 @@ public class StageManager {
 
     public void updateStageEarnedPoints(int points){
         //TODO : updateStageEarnedPoints
+    }
+
+    private Stage getActiveStage(){
+        return stages.get(activeStageIndex);
     }
 }
