@@ -1,4 +1,4 @@
-package com.alnamaa.arabic_quiz.adapters;
+package com.example.android.wordgame.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,19 +8,18 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
 import com.alnamaa.arabic_quiz.R;
-import com.alnamaa.arabic_quiz.models.QuizLevel;
-import com.alnamaa.arabic_quiz.ui.QuizScreen.QuizActivity;
-
+import com.example.android.wordgame.models.Stage;
+import com.example.android.wordgame.ui.QuizScreen.QuizActivity;
 import java.util.List;
 
-public class QuizLevelsAdapter extends RecyclerView.Adapter<QuizLevelsAdapter.VH> {
-    private List<QuizLevel> levelList;
-    private int playerScore ;
-    private static final String TAG = "QuizLevelsAdapter";
 
-    public QuizLevelsAdapter(List<QuizLevel> levelList, int playerScore) {
+public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.VH> {
+    private List<Stage> levelList;
+    private int playerScore ;
+    private static final String TAG = "StagesAdapter";
+
+    public StagesAdapter(List<Stage> levelList, int playerScore) {
         this.levelList = levelList;
         this.playerScore = playerScore;
     }
@@ -57,22 +56,16 @@ public class QuizLevelsAdapter extends RecyclerView.Adapter<QuizLevelsAdapter.VH
             textViewTotalLevelScore = itemView.findViewById(R.id.textViewTotalLevelPoints);
             itemView.setOnClickListener(this);
         }
-        private void bindData(QuizLevel level){
-            textViewLevelNumber.setText(String.valueOf(level.getLevelNumber()));
-            textViewLevelCollectedScore.setText(String.valueOf(level.getCollectedScore()));
-            textViewTotalLevelScore.setText(String.valueOf(level.getTotalScore()));
-            if(level.getScoreToUnlock()>playerScore)
-                setLocked();
-            else
-                setOpen(level);
+        private void bindData(Stage stage){
+
         }
 
         private void setLocked(){
             textViewLevelNumber.setText("LOCK");
         }
 
-        private void setOpen(QuizLevel level){
-            textViewLevelNumber.setText(String.valueOf(level.getLevelNumber()));
+        private void setOpen(Stage stage){
+            textViewLevelNumber.setText(String.valueOf(stage.getStageID()));
         }
 
         @Override

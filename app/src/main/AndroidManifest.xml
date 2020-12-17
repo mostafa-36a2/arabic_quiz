@@ -10,15 +10,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.alnamaa.arabic_quiz.ui.MainActivity">
+        <activity android:name="com.example.android.wordgame.ui.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.alnamaa.arabic_quiz.ui.levelsListScreen.LevelsActivity"></activity>
-        <activity android:name="com.alnamaa.arabic_quiz.ui.QuizScreen.QuizActivity"></activity>
+        <activity android:name="com.example.android.wordgame.ui.QuizScreen.QuizActivity"/>
+        <activity android:name="com.example.android.wordgame.ui.stagesScreen.StagesActivity"/>
     </application>
 
 </manifest>

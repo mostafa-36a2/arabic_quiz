@@ -7,8 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.android.wordgame.R;
-import com.example.android.wordgame.ui.levelsListScreen.LevelsActivity;
+import com.alnamaa.arabic_quiz.R;
+import com.example.android.wordgame.ui.stagesScreen.StagesActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(MainActivity.this, LevelsActivity.class);
+                Intent i = new Intent(MainActivity.this, StagesActivity.class);
                 startActivity(i);
             }
         });

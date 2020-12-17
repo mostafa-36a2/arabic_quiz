@@ -1,12 +1,5 @@
 package com.example.android.wordgame.ui.QuizScreen;
 
-import android.app.AlertDialog;
-import android.app.DatePickerDialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.widget.Toast;
-
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
@@ -33,10 +26,10 @@ public class QuizActivityViewModel extends ViewModel {
 
     public boolean answerQuestion(String answer) {
         Question question = displayedQuestion.getValue();
-        return question.getAnswer().equals(answer);
+        return question.answer(answer);
     }
 
-    public void startQuiz(){
+    public void startQuiz() {
         questionPosition = -1;
         Collections.shuffle(questions);
         nextQuestion();

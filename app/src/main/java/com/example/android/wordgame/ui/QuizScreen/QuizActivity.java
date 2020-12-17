@@ -13,8 +13,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.android.wordgame.R;
-import com.example.android.wordgame.databinding.ActivityQuizBinding;
+import com.alnamaa.arabic_quiz.R;
+import com.alnamaa.arabic_quiz.databinding.ActivityQuizBinding;
 import com.example.android.wordgame.models.Question;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
@@ -54,7 +54,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onChanged(Question question) {
                 if (question != null) {
-                    binding.setQuestion(question);
+                    //TODO display the question
+                    //binding.setQuestion(question);
                     startTimer();
                 } else {
                     timer.cancel();
