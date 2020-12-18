@@ -1,4 +1,4 @@
-package com.alnamaa.arabic_quiz.ui.levelsListScreen;
+package com.example.android.wordgame.ui.stagesScreen;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
@@ -9,15 +9,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.alnamaa.arabic_quiz.adapters.QuizLevelsAdapter;
 import com.alnamaa.arabic_quiz.R;
-import com.alnamaa.arabic_quiz.models.QuizLevel;
+import com.example.android.wordgame.adapters.StagesAdapter;
+import com.example.android.wordgame.models.Stage;
 
 import java.util.List;
 
-public class LevelsActivity extends AppCompatActivity {
+public class StagesActivity extends AppCompatActivity {
 
-    private com.alnamaa.arabic_quiz.ui.levelsListScreen.LevelsActivityViewModel viewModel;
+    private StagesActivityViewModel viewModel;
 
     private RecyclerView recyclerViewLevels;
 
@@ -27,20 +27,20 @@ public class LevelsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_levels);
         setUpRecycleView();
         setUpViewModel();
-        setLevels();
+        setStages();
         setPlayerScore();
     }
 
     private void setUpViewModel(){
-        viewModel = new ViewModelProvider(this).get(com.alnamaa.arabic_quiz.ui.levelsListScreen.LevelsActivityViewModel.class);
+        viewModel = new ViewModelProvider(this).get(StagesActivityViewModel.class);
     }
 
-    private void setLevels(){
-        viewModel.getQuizLevels().observe(this, new Observer<List<QuizLevel>>() {
+    private void setStages(){
+        viewModel.getStages().observe(this, new Observer<List<Stage>>() {
             @Override
-            public void onChanged(List<QuizLevel> quizLevels) {
+            public void onChanged(List<Stage> quizLevels) {
                 int playerScore = viewModel.getPlayerScore();
-                QuizLevelsAdapter mAdapter = new QuizLevelsAdapter(quizLevels,playerScore);
+                StagesAdapter mAdapter = new StagesAdapter(quizLevels,playerScore);
                 recyclerViewLevels.setAdapter(mAdapter);
             }
         });

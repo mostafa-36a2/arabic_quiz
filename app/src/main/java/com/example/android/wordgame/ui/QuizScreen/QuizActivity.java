@@ -1,4 +1,4 @@
-package com.alnamaa.arabic_quiz.ui.QuizScreen;
+package com.example.android.wordgame.ui.QuizScreen;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -15,7 +15,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.alnamaa.arabic_quiz.R;
 import com.alnamaa.arabic_quiz.databinding.ActivityQuizBinding;
-import com.alnamaa.arabic_quiz.models.Question;
+import com.example.android.wordgame.models.Question;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -54,7 +54,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onChanged(Question question) {
                 if (question != null) {
-                    binding.setQuestion(question);
+                    //TODO display the question
+                    //binding.setQuestion(question);
                     startTimer();
                 } else {
                     timer.cancel();

@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout  xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <data>
-        <variable
-            name="question"
-            type="com.alnamaa.arabic_quiz.models.Question" />
-    </data>
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -19,30 +15,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="76dp"
-            android:text="@{question.getShuffledAnswers().get(0)}"
             app:layout_constraintBottom_toBottomOf="@+id/buttonChoiceB"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/buttonChoiceB"
             app:layout_constraintVertical_bias="1.0"
-            tools:text="A"/>
+            tools:text="choice A"/>
 
         <Button
             android:id="@+id/buttonChoiceB"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="188dp"
-            android:text="@{question.getShuffledAnswers().get(1)}"
+            tools:text="choice B"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.503"
             app:layout_constraintStart_toEndOf="@+id/buttonChoiceA"
-            tools:text="B"/>
+            />
 
         <Button
             android:id="@+id/buttonChoiceC"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@{question.getShuffledAnswers().get(2)}"
+            android:text="Choice C"
             app:layout_constraintBottom_toBottomOf="@+id/buttonChoiceD"
             app:layout_constraintStart_toStartOf="@+id/buttonChoiceA"
             app:layout_constraintTop_toBottomOf="@+id/buttonChoiceA"
@@ -54,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="68dp"
-            android:text="@{question.getShuffledAnswers().get(3)}"
+            android:text="choice D"
             app:layout_constraintEnd_toEndOf="@+id/buttonChoiceB"
             app:layout_constraintTop_toBottomOf="@+id/buttonChoiceB"
             tools:text="D"/>
@@ -70,7 +65,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="who invented the light?"
-            android:text="@{question.getQuestion()}"
+            android:text="question"
             />
 
         <TextView
