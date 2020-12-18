@@ -10,16 +10,17 @@ public class StageManager {
     private int activeStageIndex ;
 
 
-    public boolean isStageLocked(){
+    public boolean isStageLocked(int index){
         //TODO : stage locking or not
         return false;
     }
-    public int getStageID(){
-        return getActiveStage().getStageID();
+
+    public void initialQuestionManager(String json){
+        QuestionManager.build(json);
     }
 
-    public void startQuiz(int numOfQuestions){
-        //TODO : start quiz
+    public void buildQuiz(int numOfQuestions){
+        //TODO : build quiz
     }
 
     public int getStageTotalPoints(){
@@ -38,5 +39,9 @@ public class StageManager {
 
     private Stage getActiveStage(){
         return stages.get(activeStageIndex);
+    }
+
+    public QuestionManager getQuestionManager() {
+        return questionManager;
     }
 }

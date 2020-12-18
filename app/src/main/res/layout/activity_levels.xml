@@ -33,5 +33,5 @@
 
         app:spanCount="3"
         tools:itemCount="20"
-        tools:listitem="@layout/row_item_level" />
+        tools:listitem="@layout/item_row_stage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

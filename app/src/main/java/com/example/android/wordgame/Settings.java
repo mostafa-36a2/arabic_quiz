@@ -1,4 +1,4 @@
-package com.alnamaa.arabic_quiz;
+package com.example.android.wordgame;
 
 public class Settings {
 

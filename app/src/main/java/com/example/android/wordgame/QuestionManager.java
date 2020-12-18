@@ -15,6 +15,7 @@ public class QuestionManager {
     private List<Question> listOfQuestion;
     private int currentQuesIndex;
 
+
     public boolean answerQuestion(String answer){
         return getCurrentQuestion().answer(answer);
     }
@@ -26,8 +27,7 @@ public class QuestionManager {
         return getCurrentQuestion();
     }
 
-
-
+    //build choices set for the current question by specify number of choices and number of correct ones
     public List<Choice> buildChoices(int choicesNumber ,int correctNum){
 
         List<Choice> returnedChoices = new ArrayList<>();
@@ -55,11 +55,13 @@ public class QuestionManager {
     }
 
 
+    //build questions from jsonString
     public static QuestionManager build (String jsonString){
         Gson gson = new Gson();
         Question[] questions = gson.fromJson(jsonString,Question[].class);
         return new QuestionManager(questions);
     }
+
 
     private QuestionManager(Question[] questions){
         listOfQuestion = new ArrayList<>();

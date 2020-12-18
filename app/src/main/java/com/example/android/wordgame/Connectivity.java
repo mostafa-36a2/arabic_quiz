@@ -1,4 +1,4 @@
-package com.alnamaa.arabic_quiz;
+package com.example.android.wordgame;
 
 import android.os.AsyncTask;
 import android.os.Looper;
@@ -15,7 +15,7 @@ import java.net.ProtocolException;
 import java.net.URL;
 
 public class Connectivity {
-    public static String lastReporetedError;
+    public static String lastReportedError;
 
 
     //-----------------
@@ -27,7 +27,7 @@ public class Connectivity {
                                             final ResponseHandler responseHandler
     ){
 
-        MyLogger.printAndStore("CommunicationWithAPI called, "+mURL+" input "+jsonInputString);
+        com.alnamaa.arabic_quiz.MyLogger.printAndStore("CommunicationWithAPI called, "+mURL+" input "+jsonInputString);
 
         AsyncTask<String, String, String> myTask ;
 
@@ -52,7 +52,7 @@ public class Connectivity {
 
             @Override
             protected String doInBackground(String... strings) {
-                lastReporetedError = "";
+                lastReportedError = "";
                 if (Looper.myLooper() == null)
                     Looper.prepare();
 
@@ -76,7 +76,7 @@ public class Connectivity {
 
                 if(httpURLConnection==null)
                 {
-                    ToastMaker.showError(Errors.HTTPURLCONNECTION_IS_NULL);
+                    com.alnamaa.arabic_quiz.ToastMaker.showError(com.alnamaa.arabic_quiz.Errors.HTTPURLCONNECTION_IS_NULL);
                     return "error httpURLConnection is null";
                 }
 
@@ -100,10 +100,10 @@ public class Connectivity {
                     } catch (IOException e) {
                         if(httpURLConnection.getErrorStream()!=null)
                         {
-                            lastReporetedError = "Fail in httpURLConnection.getOutputStream, but error stream exists";
+                            lastReportedError = "Fail in httpURLConnection.getOutputStream, but error stream exists";
                             reportError(mURL,httpURLConnection.getErrorStream());
                         }else {
-                            lastReporetedError = "يبدو أنك غير متصل بالإنترنت";
+                            lastReportedError = "يبدو أنك غير متصل بالإنترنت";
                             reportError(mURL, "IOException os = httpURLConnection.getOutputStream();(even error stream is null)", e);
                             Settings.toggleHTTPStatus();
                         }
@@ -188,7 +188,7 @@ public class Connectivity {
 
                 httpURLConnection.disconnect();
 
-                MyLogger.printAndStore("responseCode:"+responseCode+"\n" +
+                com.alnamaa.arabic_quiz.MyLogger.printAndStore("responseCode:"+responseCode+"\n" +
                         "responseMessage : " + responseMessage);
 
                 return response.toString();
@@ -228,8 +228,8 @@ public class Connectivity {
     }
 
     private static void reportError(String mURL, String error_name, Exception e) {
-        MyLogger.printAndStore("Error in "+mURL+" "+error_name);
-        lastReporetedError = error_name;
+        com.alnamaa.arabic_quiz.MyLogger.printAndStore("Error in "+mURL+" "+error_name);
+        lastReportedError = error_name;
     }
 
     //-----------------

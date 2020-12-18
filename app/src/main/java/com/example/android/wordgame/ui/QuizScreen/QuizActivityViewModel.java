@@ -4,6 +4,9 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.android.wordgame.Connectivity;
+import com.example.android.wordgame.QuestionManager;
+import com.example.android.wordgame.StageManager;
 import com.example.android.wordgame.models.Question;
 import com.example.android.wordgame.repositories.Repository;
 
@@ -11,41 +14,25 @@ import java.util.Collections;
 import java.util.List;
 
 public class QuizActivityViewModel extends ViewModel {
-    private List<Question> questions;
-    private MutableLiveData<Question> displayedQuestion;
-    private int questionPosition;
+
     private Repository repo;
+    StageManager manager;
 
     public QuizActivityViewModel() {
-        repo = new Repository();
-        displayedQuestion = new MutableLiveData<>();
-        questions = repo.getQuestion();
-        questionPosition = -1;
-        nextQuestion();
+       repo = new Repository();
+       //stage manager must be initialzed before
     }
 
     public boolean answerQuestion(String answer) {
-        Question question = displayedQuestion.getValue();
-        return question.answer(answer);
+       return manager.getQuestionManager().answerQuestion(answer);
     }
 
-    public void startQuiz() {
-        questionPosition = -1;
-        Collections.shuffle(questions);
-        nextQuestion();
-    }
 
     public void nextQuestion() {
-        questionPosition++;
-        if (questionPosition >= questions.size()) {
-            displayedQuestion.setValue(null);
-        } else {
-            displayedQuestion.setValue(questions.get(questionPosition));
-        }
+        Question question = manager.getQuestionManager().nextQuestion();
     }
 
-    public LiveData<Question> getQuestion() {
-        return displayedQuestion;
-    }
+
+
 
 }
