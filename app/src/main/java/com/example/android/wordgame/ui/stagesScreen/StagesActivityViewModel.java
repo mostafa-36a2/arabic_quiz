@@ -9,19 +9,21 @@ import com.example.android.wordgame.StageManager;
 import com.example.android.wordgame.models.Stage;
 import com.example.android.wordgame.repositories.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class StagesActivityViewModel extends ViewModel {
 
     private int playerScore;
     private Repository repo;
-    private StageManager managers;
+    private StageManager stageManager;
     private MutableLiveData<List<Stage>> mutableStages = new MutableLiveData<>();
 
     public StagesActivityViewModel() {
         repo = new Repository();
         setPlayerScore();
         setStages();
+
     }
 
     private void setStages(){
@@ -37,12 +39,28 @@ public class StagesActivityViewModel extends ViewModel {
         //TODO (2) : set player score
     }
 
-    public LiveData<List<Stage>> getStages(){
-        return mutableStages;
-    }
 
     public int getPlayerScore(){
         return playerScore;
     }
 
+    private void fetchStages(){
+         repo.getStages(new Connectivity.ResponseHandler() {
+             @Override
+             public void handleResponse(String response) {
+                 if(response != null) {
+                     int playerScore = 100;
+                     stageManager = StageManager.build(response);
+                     List<Stage> stages = stageManager.getStages();
+                     mutableStages.setValue(stages);
+                 }
+             }
+         });
+
+
+    }
+
+    public LiveData<List<Stage>> getStages() {
+        return mutableStages;
+    }
 }

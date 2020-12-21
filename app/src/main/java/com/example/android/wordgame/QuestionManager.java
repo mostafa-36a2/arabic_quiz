@@ -24,7 +24,10 @@ public class QuestionManager {
         currentQuesIndex++;
         if(currentQuesIndex == listOfQuestion.size())
             return null;
+
+        List<Choice> choices = buildChoices(4,1);
         return getCurrentQuestion();
+
     }
 
     //build choices set for the current question by specify number of choices and number of correct ones

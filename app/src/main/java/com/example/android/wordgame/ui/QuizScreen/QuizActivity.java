@@ -1,5 +1,6 @@
 package com.example.android.wordgame.ui.QuizScreen;
 
+
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -7,15 +8,15 @@ import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-
 import com.alnamaa.arabic_quiz.R;
 import com.alnamaa.arabic_quiz.databinding.ActivityQuizBinding;
 import com.example.android.wordgame.models.Question;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -66,6 +67,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+
     private void setUpViews() {
         binding.buttonChoiceA.setOnClickListener(this);
         binding.buttonChoiceB.setOnClickListener(this);
@@ -112,14 +114,15 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.cancel();
             }
         });
-        dialogView.findViewById(R.id.buttonDialogRetry).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                viewModel.startQuiz();
-                dialog.cancel();
-            }
-        });
+//        dialogView.findViewById(R.id.buttonDialogRetry).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                viewModel.startQuiz();
+//                dialog.cancel();
+//            }
+//        });
 
 
     }
+
 }

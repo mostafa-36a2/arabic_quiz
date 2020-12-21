@@ -76,7 +76,7 @@ public class Connectivity {
 
                 if(httpURLConnection==null)
                 {
-                    com.alnamaa.arabic_quiz.ToastMaker.showError(com.alnamaa.arabic_quiz.Errors.HTTPURLCONNECTION_IS_NULL);
+                    com.alnamaa.arabic_quiz.ToastMaker.showError(Errors.HTTPURLCONNECTION_IS_NULL);
                     return "error httpURLConnection is null";
                 }
 

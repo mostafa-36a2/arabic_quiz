@@ -16,20 +16,37 @@ import java.util.List;
 public class QuizActivityViewModel extends ViewModel {
 
     private Repository repo;
-    StageManager manager;
+    private StageManager stageManager;//TODO SET STAGE MANAGER
+    private MutableLiveData<Question> displayedQuestion = new MutableLiveData<>();
 
     public QuizActivityViewModel() {
        repo = new Repository();
        //stage manager must be initialzed before
+        fetchQuestions();
+    }
+
+    public LiveData<Question> getQuestion(){
+        return displayedQuestion;
+    }
+
+    private void fetchQuestions(){
+        repo.getQuestions(new Connectivity.ResponseHandler() {
+            @Override
+            public void handleResponse(String response) {
+                stageManager.initialQuestionManager(response);
+                stageManager.buildQuiz(10);
+            }
+        });
     }
 
     public boolean answerQuestion(String answer) {
-       return manager.getQuestionManager().answerQuestion(answer);
+       return stageManager.getQuestionManager().answerQuestion(answer);
     }
 
 
     public void nextQuestion() {
-        Question question = manager.getQuestionManager().nextQuestion();
+        Question question = stageManager.getQuestionManager().nextQuestion();
+        displayedQuestion.setValue(question);
     }
 
 
