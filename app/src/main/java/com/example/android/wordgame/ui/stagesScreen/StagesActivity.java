@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.alnamaa.arabic_quiz.R;
@@ -40,7 +41,7 @@ public class StagesActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Stage> quizLevels) {
                 int playerScore = viewModel.getPlayerScore();
-                StagesAdapter mAdapter = new StagesAdapter(quizLevels,playerScore);
+                StagesAdapter mAdapter = new StagesAdapter(quizLevels);
                 recyclerViewLevels.setAdapter(mAdapter);
             }
         });
@@ -55,5 +56,15 @@ public class StagesActivity extends AppCompatActivity {
     private void setPlayerScore(){
         TextView textViewPlayerTotalScore = findViewById(R.id.textViewPlayerTotalPoints);
         textViewPlayerTotalScore.setText(String.valueOf(viewModel.getPlayerScore()));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
     }
 }

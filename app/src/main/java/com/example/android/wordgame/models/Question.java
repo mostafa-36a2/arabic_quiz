@@ -1,16 +1,16 @@
 package com.example.android.wordgame.models;
 
+import androidx.annotation.NonNull;
+
 import java.util.List;
 
-public class Question {
+public class Question implements Cloneable{
 
     private int id;
     private String question;
     private List<Choice>choices;
     private int difficulty;
     private Language language;
-
-
 
     public String getQuestion(){return this.question;}
 
@@ -39,5 +39,13 @@ public class Question {
 
         }
         return false;
+    }
+
+
+
+    @NonNull
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
