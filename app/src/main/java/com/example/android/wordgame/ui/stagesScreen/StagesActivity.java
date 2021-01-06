@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -30,6 +31,8 @@ public class StagesActivity extends AppCompatActivity {
         setUpViewModel();
         setStages();
         setPlayerScore();
+
+
     }
 
     private void setUpViewModel(){
