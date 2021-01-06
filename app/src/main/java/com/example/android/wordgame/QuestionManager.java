@@ -17,6 +17,7 @@ public class QuestionManager {
 
 
     public boolean answerQuestion(String answer){
+
         return getCurrentQuestion().answer(answer);
     }
 
@@ -27,7 +28,6 @@ public class QuestionManager {
 
         List<Choice> choices = buildChoices(4,1);
         return getCurrentQuestion();
-
     }
 
     //build choices set for the current question by specify number of choices and number of correct ones

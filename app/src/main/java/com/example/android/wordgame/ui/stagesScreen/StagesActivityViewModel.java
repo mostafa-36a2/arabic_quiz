@@ -1,9 +1,12 @@
 package com.example.android.wordgame.ui.stagesScreen;
 
+import android.widget.Button;
+
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.alnamaa.arabic_quiz.R;
 import com.example.android.wordgame.Connectivity;
 import com.example.android.wordgame.StageManager;
 import com.example.android.wordgame.models.Stage;
@@ -18,6 +21,8 @@ public class StagesActivityViewModel extends ViewModel {
     private Repository repo;
     private StageManager stageManager;
     private MutableLiveData<List<Stage>> mutableStages = new MutableLiveData<>();
+
+
 
     public StagesActivityViewModel() {
         repo = new Repository();
