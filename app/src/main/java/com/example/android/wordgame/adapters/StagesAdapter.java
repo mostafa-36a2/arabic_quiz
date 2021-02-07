@@ -1,7 +1,5 @@
 package com.example.android.wordgame.adapters;
 
-import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import com.alnamaa.arabic_quiz.R;
 import com.example.android.wordgame.models.Stage;
-import com.example.android.wordgame.ui.QuizScreen.QuizActivity;
+
 import java.util.List;
 
 
@@ -52,15 +50,11 @@ public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.VH> {
 
 
     public class VH extends RecyclerView.ViewHolder  {
-        private TextView textViewLevelNumber;
-        private TextView textViewLevelCollectedScore;
-        private TextView textViewTotalLevelScore;
+        private TextView textViewStageSequence;
 
         public VH(@NonNull View itemView) {
             super(itemView);
-            textViewLevelNumber = itemView.findViewById(R.id.textViewLevelNumber);
-            textViewLevelCollectedScore = itemView.findViewById(R.id.textViewLevelCollectedScore);
-            textViewTotalLevelScore = itemView.findViewById(R.id.textViewTotalLevelPoints);
+            textViewStageSequence = itemView.findViewById(R.id.textViewStageSequence);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -70,8 +64,7 @@ public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.VH> {
             });
         }
         private void bindData(Stage stage){
-            textViewLevelNumber.setText(""+getAdapterPosition());
-            textViewTotalLevelScore.setText(""+100);
+            textViewStageSequence.setText(""+stage.getSequence());
         }
     }
 }

@@ -2,14 +2,14 @@ package com.example.android.wordgame.models;
 
 public class Stage {
 
-    private int stageID ;
-    private int totalPoints;
+    private int id ;
+    private int sequence ;
 
-    public int getStageID() {
-        return stageID;
+    public int getID() {
+        return id;
     }
 
-    public int getTotalPoints() {
-        return totalPoints;
+    public int getSequence() {
+        return sequence;
     }
 }
