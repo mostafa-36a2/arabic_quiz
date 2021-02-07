@@ -13,11 +13,15 @@ import java.util.List;
 
 public class StageManager {
     private QuestionManager questionManager;
-    private List<Stage> stages;
-    private int activeStageIndex ;
+    private Stage stage;
 
-    public List<Stage> getStages() {
-        return stages;
+
+    public StageManager(Stage stage){
+        this.stage = stage;
+    }
+
+    public Stage getStages() {
+        return stage;
     }
 
     public boolean isStageLocked(int index){
@@ -25,14 +29,14 @@ public class StageManager {
         return false;
     }
 
-    public void setActiveStageIndex(int index){  activeStageIndex = index; }
 
     public void initialQuestionManager(String json){
         QuestionManager.build(json);
     }
 
-    public void buildQuiz(int numOfQuestions){
+    public void buildQuiz(){
         //TODO : build quiz
+
     }
 
     public int getStageTotalPoints(){
@@ -49,28 +53,11 @@ public class StageManager {
         //TODO : updateStageEarnedPoints
     }
 
-    private Stage getActiveStage(){
-        return stages.get(activeStageIndex);
-    }
 
     public QuestionManager getQuestionManager() {
         return questionManager;
     }
 
-    public static StageManager build(String json){
-        Gson gson = new Gson();
-        Stage[] stages1 = gson.fromJson(json,Stage[].class);
-
-        StageManager stageManager =new StageManager(stages1);
-
-        return stageManager;
-    }
-
-    private StageManager(Stage[] listOfStages){
-        stages = Arrays.asList(listOfStages);
-        activeStageIndex = -1;
-        questionManager = null;
-    }
 
 
 
