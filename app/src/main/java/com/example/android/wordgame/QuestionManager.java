@@ -22,6 +22,7 @@ public class QuestionManager {
         MyLogger.printAndStore("question was : "+getCurrentQuestion().getQuestion());
         return getCurrentQuestion().answer(answer);
     }
+    //ll
 
     public Question nextQuestion(){
         currentQuesIndex++;
