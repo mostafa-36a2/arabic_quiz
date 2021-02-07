@@ -1,5 +1,6 @@
 package com.example.android.wordgame.ui.stagesScreen;
 
+import android.util.Log;
 import android.widget.Button;
 
 import androidx.lifecycle.LiveData;
@@ -21,6 +22,7 @@ import java.util.List;
 public class StagesActivityViewModel extends ViewModel {
 
     private Repository repo;
+    private static final String TAG = "StagesActivityViewModel";
     private MutableLiveData<List<Stage>> mutableStages = new MutableLiveData<>();
     private List<StageManager> stageManagers = new ArrayList<>();
     private MutableLiveData<Boolean> loadingProgressBar = new MutableLiveData<>();
@@ -35,6 +37,7 @@ public class StagesActivityViewModel extends ViewModel {
 
     private void fetchStages(){
         loadingProgressBar.setValue(true);
+        Log.i(TAG, "fetchStages: progress bar is on");
          repo.getStages(new Connectivity.ResponseHandler() {
              @Override
              public void handleResponse(String response) {
@@ -45,8 +48,12 @@ public class StagesActivityViewModel extends ViewModel {
                          stageManagers.add(new StageManager(stage));
                      }
                      mutableStages.setValue(Arrays.asList(stages));
-                     loadingProgressBar.setValue(false);
+
+
+
                  }
+                 loadingProgressBar.setValue(false);
+                 Log.i(TAG, "fetchStages: progress bar is off");
              }
          });
 

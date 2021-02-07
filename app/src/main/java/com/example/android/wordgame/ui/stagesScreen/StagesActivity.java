@@ -30,6 +30,7 @@ public class StagesActivity extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levels);
+        loadingProgressbar = findViewById(R.id.loadingProgressBar);
         setUpRecycleView();
         setUpViewModel();
         handleLoadingState();
