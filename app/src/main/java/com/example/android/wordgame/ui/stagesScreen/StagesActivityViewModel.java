@@ -11,35 +11,31 @@ import com.example.android.wordgame.Connectivity;
 import com.example.android.wordgame.StageManager;
 import com.example.android.wordgame.models.Stage;
 import com.example.android.wordgame.repositories.Repository;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class StagesActivityViewModel extends ViewModel {
 
     private int playerScore;
     private Repository repo;
-    private StageManager stageManager;
     private MutableLiveData<List<Stage>> mutableStages = new MutableLiveData<>();
+    private List<StageManager> stageManagers = new ArrayList<>();
 
 
 
     public StagesActivityViewModel() {
         repo = new Repository();
-        setPlayerScore();
-        setStages();
+        //setPlayerScore();
+        fetchStages();
 
     }
 
-    private void setStages(){
-        //TODO (1) : set quiz levels
-        repo.getStages(new Connectivity.ResponseHandler() {
-            @Override
-            public void handleResponse(String response) {
-                //TODO NOT IMPLEMENTED BUILD STAGE MANAGER FROM RESPONSE
-            }
-        });
-    }
+
+
     private void setPlayerScore(){
         //TODO (2) : set player score
     }
@@ -54,10 +50,12 @@ public class StagesActivityViewModel extends ViewModel {
              @Override
              public void handleResponse(String response) {
                  if(response != null) {
-                     int playerScore = 100;
-                     stageManager = StageManager.build(response);
-                     List<Stage> stages = stageManager.getStages();
-                     mutableStages.setValue(stages);
+                     Gson gson = new Gson();
+                     Stage[] stages = gson.fromJson(response,Stage[].class);
+                     for (Stage stage :stages) {
+                         stageManagers.add(new StageManager(stage));
+                     }
+                     mutableStages.setValue(Arrays.asList(stages));
                  }
              }
          });
@@ -67,5 +65,9 @@ public class StagesActivityViewModel extends ViewModel {
 
     public LiveData<List<Stage>> getStages() {
         return mutableStages;
+    }
+
+    public void startQuiz(int i){
+        //stageManagers.get(i).initialQuestionManager();
     }
 }

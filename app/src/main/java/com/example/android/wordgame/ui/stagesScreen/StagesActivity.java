@@ -6,7 +6,9 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -14,10 +16,11 @@ import android.widget.TextView;
 import com.alnamaa.arabic_quiz.R;
 import com.example.android.wordgame.adapters.StagesAdapter;
 import com.example.android.wordgame.models.Stage;
+import com.example.android.wordgame.ui.QuizScreen.QuizActivity;
 
 import java.util.List;
 
-public class StagesActivity extends AppCompatActivity {
+public class StagesActivity extends AppCompatActivity  {
 
     private StagesActivityViewModel viewModel;
 
@@ -32,6 +35,15 @@ public class StagesActivity extends AppCompatActivity {
         setStages();
         setPlayerScore();
 
+        Button btn = findViewById(R.id.startQuizBtn);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(StagesActivity.this, QuizActivity.class);
+                startActivity(i);
+            }
+        });
+
 
     }
 
@@ -42,9 +54,15 @@ public class StagesActivity extends AppCompatActivity {
     private void setStages(){
         viewModel.getStages().observe(this, new Observer<List<Stage>>() {
             @Override
-            public void onChanged(List<Stage> quizLevels) {
+            public void onChanged(List<Stage> stages) {
                 int playerScore = viewModel.getPlayerScore();
-                StagesAdapter mAdapter = new StagesAdapter(quizLevels);
+                StagesAdapter mAdapter = new StagesAdapter(stages, new StagesAdapter.OnStageClickListener() {
+                    @Override
+                    public void stageClicked(Stage stage, int i) {
+                        Intent intent = new Intent(StagesActivity.this,QuizActivity.class);
+                        startActivity(intent);
+                    }
+                });
                 recyclerViewLevels.setAdapter(mAdapter);
             }
         });
@@ -70,4 +88,6 @@ public class StagesActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
     }
+
+
 }

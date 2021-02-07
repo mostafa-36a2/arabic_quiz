@@ -14,14 +14,21 @@ import com.example.android.wordgame.ui.QuizScreen.QuizActivity;
 import java.util.List;
 
 
-//TODO not complete
 
 public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.VH> {
+
+    public interface OnStageClickListener{
+        void stageClicked(Stage stage , int i);
+    }
+
+    private OnStageClickListener listener;
+
     private List<Stage> stages;
     private static final String TAG = "StagesAdapter";
 
-    public StagesAdapter(List<Stage> levelList) {
-        this.stages = levelList;
+    public StagesAdapter(List<Stage> stages,OnStageClickListener listener) {
+        this.stages = stages;
+        this.listener = listener;
     }
 
     @NonNull
@@ -44,7 +51,7 @@ public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.VH> {
     }
 
 
-    public class VH extends RecyclerView.ViewHolder {
+    public class VH extends RecyclerView.ViewHolder  {
         private TextView textViewLevelNumber;
         private TextView textViewLevelCollectedScore;
         private TextView textViewTotalLevelScore;
@@ -54,21 +61,17 @@ public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.VH> {
             textViewLevelNumber = itemView.findViewById(R.id.textViewLevelNumber);
             textViewLevelCollectedScore = itemView.findViewById(R.id.textViewLevelCollectedScore);
             textViewTotalLevelScore = itemView.findViewById(R.id.textViewTotalLevelPoints);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if(listener!= null)
+                        listener.stageClicked(stages.get(getAdapterPosition()),getAdapterPosition());
+                }
+            });
         }
         private void bindData(Stage stage){
+            textViewLevelNumber.setText(""+getAdapterPosition());
+            textViewTotalLevelScore.setText(""+100);
         }
-
-        private void setLocked(){
-
-        }
-
-        private void setOpen(Stage stage){
-            textViewLevelNumber.setText(String.valueOf(stage.getStageID()));
-        }
-
-
     }
-
-
-    
 }

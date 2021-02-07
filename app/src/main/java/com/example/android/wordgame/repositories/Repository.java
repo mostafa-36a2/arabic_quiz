@@ -9,7 +9,7 @@ import java.util.List;
 
 public class Repository {
 
-    private final static String questionURI = "";
+    private final static String questionURI = "https://follow.leafwaysco.com/arabic/query_question.php";
     private final static String stagesURI = "";
 
 

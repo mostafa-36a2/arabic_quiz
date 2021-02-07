@@ -2,6 +2,8 @@ package com.example.android.wordgame.models;
 
 import androidx.annotation.NonNull;
 
+import com.alnamaa.arabic_quiz.MyLogger;
+
 import java.util.List;
 
 public class Question implements Cloneable{
@@ -32,10 +34,12 @@ public class Question implements Cloneable{
     }
 
     public boolean answer(String answer){
-        for (Choice choice: choices) {
+        for (Choice choice: choices) {  
 
-            if(choice.getChoice().equals(answer))
+            if(choice.getChoice().equals(answer)) {
+                MyLogger.printAndStore(choice.getChoice()+" equals : "+answer+"  "+choice.isCorrect());
                 return choice.isCorrect();
+            }
 
         }
         return false;

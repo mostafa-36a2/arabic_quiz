@@ -3,6 +3,8 @@ package com.example.android.wordgame;
 import android.os.AsyncTask;
 import android.os.Looper;
 
+import com.alnamaa.arabic_quiz.MyLogger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,7 +29,7 @@ public class Connectivity {
                                             final ResponseHandler responseHandler
     ){
 
-        com.alnamaa.arabic_quiz.MyLogger.printAndStore("CommunicationWithAPI called, "+mURL+" input "+jsonInputString);
+        MyLogger.printAndStore("CommunicationWithAPI called, "+mURL+" input "+jsonInputString);
 
         AsyncTask<String, String, String> myTask ;
 
@@ -42,6 +44,7 @@ public class Connectivity {
                 super.onPostExecute(data);
                 if(responseHandler!=null)
                 {
+                    MyLogger.printAndStore(this.getClass().getSimpleName()+" : data is : "+data);
                     responseHandler.handleResponse(data);
                 }
             }
