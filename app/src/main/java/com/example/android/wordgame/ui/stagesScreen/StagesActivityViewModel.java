@@ -20,32 +20,21 @@ import java.util.List;
 
 public class StagesActivityViewModel extends ViewModel {
 
-    private int playerScore;
     private Repository repo;
     private MutableLiveData<List<Stage>> mutableStages = new MutableLiveData<>();
     private List<StageManager> stageManagers = new ArrayList<>();
+    private MutableLiveData<Boolean> loadingProgressBar = new MutableLiveData<>();
 
 
 
     public StagesActivityViewModel() {
         repo = new Repository();
-        //setPlayerScore();
         fetchStages();
 
     }
 
-
-
-    private void setPlayerScore(){
-        //TODO (2) : set player score
-    }
-
-
-    public int getPlayerScore(){
-        return playerScore;
-    }
-
     private void fetchStages(){
+        loadingProgressBar.setValue(true);
          repo.getStages(new Connectivity.ResponseHandler() {
              @Override
              public void handleResponse(String response) {
@@ -56,6 +45,7 @@ public class StagesActivityViewModel extends ViewModel {
                          stageManagers.add(new StageManager(stage));
                      }
                      mutableStages.setValue(Arrays.asList(stages));
+                     loadingProgressBar.setValue(false);
                  }
              }
          });
@@ -63,11 +53,13 @@ public class StagesActivityViewModel extends ViewModel {
 
     }
 
+    public LiveData<Boolean> getLoadingState(){
+        return loadingProgressBar;
+    }
+
     public LiveData<List<Stage>> getStages() {
         return mutableStages;
     }
 
-    public void startQuiz(int i){
-        //stageManagers.get(i).initialQuestionManager();
-    }
+
 }

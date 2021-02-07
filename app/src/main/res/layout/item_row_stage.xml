@@ -12,7 +12,7 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textViewLevelNumber"
+        android:id="@+id/textViewStageSequence"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -27,6 +27,7 @@
         android:id="@+id/textViewLevelCollectedScore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintEnd_toStartOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="@+id/textView4"
         tools:text="93" />
@@ -37,17 +38,19 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="/"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/textViewLevelNumber"
+        app:layout_constraintEnd_toEndOf="@+id/textViewStageSequence"
         app:layout_constraintHorizontal_bias="0.428"
-        app:layout_constraintStart_toStartOf="@+id/textViewLevelNumber"
-        app:layout_constraintTop_toBottomOf="@+id/textViewLevelNumber"
+        app:layout_constraintStart_toStartOf="@+id/textViewStageSequence"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStageSequence"
         app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textViewTotalLevelPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="invisible"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toTopOf="@+id/textView4"
         tools:text="156" />

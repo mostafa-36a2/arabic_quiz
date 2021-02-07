@@ -10,7 +10,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alnamaa.arabic_quiz.R;
@@ -23,7 +23,7 @@ import java.util.List;
 public class StagesActivity extends AppCompatActivity  {
 
     private StagesActivityViewModel viewModel;
-
+    private ProgressBar loadingProgressbar;
     private RecyclerView recyclerViewLevels;
 
     @Override
@@ -32,8 +32,8 @@ public class StagesActivity extends AppCompatActivity  {
         setContentView(R.layout.activity_levels);
         setUpRecycleView();
         setUpViewModel();
+        handleLoadingState();
         setStages();
-        setPlayerScore();
 
         Button btn = findViewById(R.id.startQuizBtn);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -55,7 +55,6 @@ public class StagesActivity extends AppCompatActivity  {
         viewModel.getStages().observe(this, new Observer<List<Stage>>() {
             @Override
             public void onChanged(List<Stage> stages) {
-                int playerScore = viewModel.getPlayerScore();
                 StagesAdapter mAdapter = new StagesAdapter(stages, new StagesAdapter.OnStageClickListener() {
                     @Override
                     public void stageClicked(Stage stage, int i) {
@@ -69,24 +68,22 @@ public class StagesActivity extends AppCompatActivity  {
     }
 
     private void setUpRecycleView(){
-        recyclerViewLevels = findViewById(R.id.recyclerViewQuizLevels);
+        recyclerViewLevels = findViewById(R.id.recyclerViewStages);
         recyclerViewLevels.setLayoutManager(new GridLayoutManager(this,3));
 
     }
 
-    private void setPlayerScore(){
-        TextView textViewPlayerTotalScore = findViewById(R.id.textViewPlayerTotalPoints);
-        textViewPlayerTotalScore.setText(String.valueOf(viewModel.getPlayerScore()));
-    }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
+    private void handleLoadingState(){
+        viewModel.getLoadingState().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+                if(loading)
+                    loadingProgressbar.setVisibility(View.VISIBLE);
+                else
+                    loadingProgressbar.setVisibility(View.GONE);
+            }
+        });
     }
 
 
