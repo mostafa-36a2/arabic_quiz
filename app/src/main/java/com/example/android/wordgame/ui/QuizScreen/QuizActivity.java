@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonChoiceD;
     private TextView questionTv;
     private TextView textViewTimer;
+    private ProgressBar loadingProgressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +39,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         ToastMaker.initialize(this, null);
 
         setContentView(R.layout.activity_quiz);
+        ToastMaker.initialize(this,null);
         setUpViews();
         setTimer();
         initialViewModel();
+        handleConnectionError();
+        loadingHandling();
         setQuestion();
     }
 
@@ -68,13 +73,13 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     //TODO display the question
 
                     questionTv.setText(question.getQuestion());
-
+                    startTimer();
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
                     buttonChoiceB.setText(question.getChoices().get(1).getChoice());
                     if(question.getChoices().size() <3)return;
                     buttonChoiceC.setText(question.getChoices().get(2).getChoice());
                     buttonChoiceD.setText(question.getChoices().get(3).getChoice());
-                    startTimer();
+
                 } else {
                     timer.cancel();
                     textViewTimer.setText(String.valueOf(0));
@@ -84,6 +89,33 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
+    private void loadingHandling(){
+        viewModel.getLoadingState().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+
+                if(loading) {
+                    loadingProgressBar.setVisibility(View.VISIBLE);
+                    buttonChoiceA.setVisibility(View.INVISIBLE);
+                    buttonChoiceB.setVisibility(View.INVISIBLE);
+                    buttonChoiceC.setVisibility(View.INVISIBLE);
+                    buttonChoiceD.setVisibility(View.INVISIBLE);
+                    questionTv.setVisibility(View.INVISIBLE);
+                    textViewTimer.setVisibility(View.INVISIBLE);
+
+                }else{
+                    loadingProgressBar.setVisibility(View.INVISIBLE);
+                    buttonChoiceA.setVisibility(View.VISIBLE);
+                    buttonChoiceB.setVisibility(View.VISIBLE);
+                    buttonChoiceC.setVisibility(View.VISIBLE);
+                    buttonChoiceD.setVisibility(View.VISIBLE);
+                    questionTv.setVisibility(View.VISIBLE);
+                    textViewTimer.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+    }
 
     private void setUpViews() {
         buttonChoiceA = findViewById(R.id.buttonChoiceA);
@@ -96,6 +128,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         buttonChoiceD.setOnClickListener(this);
         questionTv = findViewById(R.id.textViewQuestion);
         textViewTimer = findViewById(R.id.textViewTimer);
+        loadingProgressBar = findViewById(R.id.loadingProgressBar);
     }
 
     private void setTimer() {
@@ -146,6 +179,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 //        });
 
 
+    }
+
+    private void handleConnectionError(){
+        viewModel.getErrorMessage().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                ToastMaker.showMessage(s);
+                finish();
+            }
+        });
     }
 
 }

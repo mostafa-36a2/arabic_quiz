@@ -8,6 +8,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.alnamaa.arabic_quiz.R;
+import com.example.android.wordgame.ConnectionResponse;
 import com.example.android.wordgame.Connectivity;
 import com.example.android.wordgame.StageManager;
 import com.example.android.wordgame.models.Stage;
@@ -26,6 +27,7 @@ public class StagesActivityViewModel extends ViewModel {
     private MutableLiveData<List<Stage>> mutableStages = new MutableLiveData<>();
     private List<StageManager> stageManagers = new ArrayList<>();
     private MutableLiveData<Boolean> loadingProgressBar = new MutableLiveData<>();
+    private MutableLiveData<String>errorMessage =new MutableLiveData<>();
 
 
 
@@ -40,20 +42,21 @@ public class StagesActivityViewModel extends ViewModel {
         Log.i(TAG, "fetchStages: progress bar is on");
          repo.getStages(new Connectivity.ResponseHandler() {
              @Override
-             public void handleResponse(String response) {
-                 if(response != null) {
+             public void handleResponse(ConnectionResponse response) {
+                 loadingProgressBar.setValue(false);
+                 if(response.getResponse() != null) {
                      Gson gson = new Gson();
-                     Stage[] stages = gson.fromJson(response,Stage[].class);
+                     Stage[] stages = gson.fromJson(response.getResponse(),Stage[].class);
                      for (Stage stage :stages) {
                          stageManagers.add(new StageManager(stage));
                      }
                      mutableStages.setValue(Arrays.asList(stages));
 
-
-
                  }
-                 loadingProgressBar.setValue(false);
-                 Log.i(TAG, "fetchStages: progress bar is off");
+                 else
+                 {
+                     errorMessage.setValue(response.getErrorMessage());
+                 }
              }
          });
 
@@ -68,5 +71,7 @@ public class StagesActivityViewModel extends ViewModel {
         return mutableStages;
     }
 
-
+    public LiveData<String> getErrorMessage() {
+        return errorMessage;
+    }
 }
