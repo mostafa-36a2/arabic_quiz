@@ -123,7 +123,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
-        dialogView.findViewById(R.id.buttonDialogHome).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.imageButtonHome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
