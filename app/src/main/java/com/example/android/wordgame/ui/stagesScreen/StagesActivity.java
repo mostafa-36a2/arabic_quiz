@@ -14,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.alnamaa.arabic_quiz.R;
+import com.alnamaa.arabic_quiz.ToastMaker;
 import com.example.android.wordgame.adapters.StagesAdapter;
 import com.example.android.wordgame.models.Stage;
 import com.example.android.wordgame.ui.QuizScreen.QuizActivity;
@@ -31,9 +32,11 @@ public class StagesActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levels);
         loadingProgressbar = findViewById(R.id.loadingProgressBar);
+        ToastMaker.initialize(this,null);
         setUpRecycleView();
         setUpViewModel();
         handleLoadingState();
+        handleConnectionError();
         setStages();
 
         Button btn = findViewById(R.id.startQuizBtn);
@@ -83,6 +86,15 @@ public class StagesActivity extends AppCompatActivity  {
                     loadingProgressbar.setVisibility(View.VISIBLE);
                 else
                     loadingProgressbar.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void handleConnectionError(){
+        viewModel.getErrorMessage().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(String s) {
+                ToastMaker.showMessage(s);
             }
         });
     }
