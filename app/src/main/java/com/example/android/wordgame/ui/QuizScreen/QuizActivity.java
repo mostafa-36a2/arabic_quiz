@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -24,7 +25,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     private QuizActivityViewModel viewModel;
     private CountDownTimer timer;
-
     private Button buttonChoiceA;
     private Button buttonChoiceB;
     private Button buttonChoiceC;
@@ -32,20 +32,24 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView questionTv;
     private TextView textViewTimer;
     private ProgressBar loadingProgressBar;
+    public static final String EXTRA_STAGE_ID = "extra.stage.id";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ToastMaker.initialize(this, null);
-
         setContentView(R.layout.activity_quiz);
         ToastMaker.initialize(this,null);
+
         setUpViews();
         setTimer();
         initialViewModel();
         handleConnectionError();
         loadingHandling();
         setQuestion();
+
+        int id = getIntent().getIntExtra(EXTRA_STAGE_ID,0);
+        viewModel.startQuiz(id);
     }
 
     @Override
@@ -71,7 +75,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             public void onChanged(Question question) {
                 if (question != null) {
                     //TODO display the question
-
+                    MyLogger.printAndStore("ques : "+question.getQuestion());
                     questionTv.setText(question.getQuestion());
                     startTimer();
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
@@ -156,7 +160,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
-        dialogView.findViewById(R.id.imageButtonHome).setOnClickListener(new View.OnClickListener() {
+        dialogView.findViewById(R.id.buttonDialogHome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 finish();
@@ -170,13 +174,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 dialog.cancel();
             }
         });
-//        dialogView.findViewById(R.id.buttonDialogRetry).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                viewModel.startQuiz();
-//                dialog.cancel();
-//            }
-//        });
+
 
 
     }

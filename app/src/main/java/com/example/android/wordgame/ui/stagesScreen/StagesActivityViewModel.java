@@ -46,6 +46,7 @@ public class StagesActivityViewModel extends ViewModel {
                  loadingProgressBar.setValue(false);
                  if(response.getResponse() != null) {
                      Gson gson = new Gson();
+                     Log.i(TAG, "handleResponse: "+response.getResponse());
                      Stage[] stages = gson.fromJson(response.getResponse(),Stage[].class);
                      for (Stage stage :stages) {
                          stageManagers.add(new StageManager(stage));

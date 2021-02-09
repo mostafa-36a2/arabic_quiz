@@ -21,13 +21,4 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.889" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="58dp"
-        android:layout_height="43dp"
-        android:autoSizeTextType="uniform"
-        android:text="ابدأ"
-        tools:layout_editor_absoluteX="297dp"
-        tools:layout_editor_absoluteY="648dp" />
-
 </androidx.constraintlayout.widget.ConstraintLayout>

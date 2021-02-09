@@ -1,5 +1,6 @@
 package com.example.android.wordgame.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +65,7 @@ public class StagesAdapter extends RecyclerView.Adapter<StagesAdapter.VH> {
             });
         }
         private void bindData(Stage stage){
-            textViewStageSequence.setText(""+stage.getSequence());
+            textViewStageSequence.setText(""+stage.getID());
         }
     }
 }

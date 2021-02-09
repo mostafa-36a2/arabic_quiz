@@ -6,54 +6,50 @@
     android:layout_height="match_parent"
     android:background="@drawable/xg">
 
-    <TextView
-        android:id="@+id/textViewDialogMessage"
-        android:layout_width="75dp"
-        android:layout_height="44dp"
-        android:layout_marginTop="216dp"
-        android:autoSizeTextType="uniform"
-        android:text="Score/...."
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageButton
         android:id="@+id/buttonDialogNext"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
-        android:layout_marginTop="100dp"
         android:background="#00FFFFFF"
+        android:layout_marginTop="200dp"
+        android:layout_marginBottom="150dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonDialogHome"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDialogMessage"
-        app:layout_constraintVertical_bias="0.116"
-        app:srcCompat="@drawable/xxxy" />
-
-    <ImageButton
-        android:id="@+id/buttonDialogRetry"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:background="#00FFFFFF"
-        app:layout_constraintBottom_toBottomOf="@+id/buttonDialogNext"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/buttonDialogNext"
-        app:layout_constraintTop_toTopOf="@+id/buttonDialogNext"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/xxxxy" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/xxxy" />
 
     <ImageButton
         android:id="@+id/buttonDialogHome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="4dp"
         android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonDialogNext"
+        app:layout_constraintEnd_toStartOf="@+id/buttonDialogNext"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/buttonDialogNext"
         app:srcCompat="@drawable/xxy" />
+
+    <ImageButton
+        android:id="@+id/buttonDialogRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonDialogNext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/buttonDialogNext"
+        app:layout_constraintTop_toTopOf="@+id/buttonDialogNext"
+        app:srcCompat="@drawable/xxxxy" />
+
+    <TextView
+        android:id="@+id/textViewDialogMessage"
+        android:layout_width="75dp"
+        android:layout_height="44dp"
+        android:autoSizeTextType="uniform"
+        android:text="Score/...."
+        app:layout_constraintBottom_toTopOf="@+id/buttonDialogNext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

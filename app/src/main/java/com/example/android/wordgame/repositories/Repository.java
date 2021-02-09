@@ -10,11 +10,12 @@ import java.util.List;
 public class Repository {
 
     private final static String questionURI = "https://follow.leafwaysco.com/arabic/query_question.php";
-    private final static String stagesURI = "";
+    private final static String stagesURI = "https://follow.leafwaysco.com/arabic/stages.php";
 
 
-    public void getQuestions(Connectivity.ResponseHandler response){
-        Connectivity.CommunicationWithAPI(questionURI,null,response);
+    public void getQuestions(int stageID,Connectivity.ResponseHandler response){
+
+        Connectivity.CommunicationWithAPI(questionURI+"?stage_id="+stageID,null,response);
     }
 
 

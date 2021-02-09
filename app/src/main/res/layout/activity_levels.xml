@@ -11,41 +11,30 @@
         android:id="@+id/textViewPlayerTotalPoints"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="88dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        tools:layout_editor_absoluteX="345dp"
-        tools:layout_editor_absoluteY="26dp"
+        app:layout_constraintBottom_toTopOf="@+id/recyclerViewStages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:text="100" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewStages"
-        android:layout_width="391dp"
-        android:layout_height="600dp"
-        android:layout_marginStart="1dp"
-        android:layout_marginEnd="1dp"
+        android:layout_width="wrap_content"
+        android:layout_height="500dp"
         android:animateLayoutChanges="false"
         android:background="#00FFFFFF"
+        android:padding="15dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintHorizontal_bias="0.543"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewPlayerTotalPoints"
-        app:layout_constraintVertical_bias="0.482"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.512"
         app:spanCount="3"
         tools:itemCount="20"
         tools:listitem="@layout/item_row_stage" />
-
-    <Button
-        android:id="@+id/startQuizBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="240dp"
-        android:layout_marginBottom="16dp"
-        android:background="#00FFFFFF"
-        android:text="Button"
-        app:layout_constraintBottom_toTopOf="@+id/recyclerViewStages"
-        app:layout_constraintEnd_toStartOf="@+id/textViewPlayerTotalPoints" />
 
     <ProgressBar
         android:visibility="invisible"

@@ -38,17 +38,6 @@ public class StagesActivity extends AppCompatActivity  {
         handleLoadingState();
         handleConnectionError();
         setStages();
-
-        Button btn = findViewById(R.id.startQuizBtn);
-        btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(StagesActivity.this, QuizActivity.class);
-                startActivity(i);
-            }
-        });
-
-
     }
 
     private void setUpViewModel(){
@@ -63,7 +52,9 @@ public class StagesActivity extends AppCompatActivity  {
                     @Override
                     public void stageClicked(Stage stage, int i) {
                         Intent intent = new Intent(StagesActivity.this,QuizActivity.class);
+                        intent.putExtra(QuizActivity.EXTRA_STAGE_ID,stage.getID());
                         startActivity(intent);
+
                     }
                 });
                 recyclerViewLevels.setAdapter(mAdapter);
@@ -76,7 +67,6 @@ public class StagesActivity extends AppCompatActivity  {
         recyclerViewLevels.setLayoutManager(new GridLayoutManager(this,3));
 
     }
-
 
     private void handleLoadingState(){
         viewModel.getLoadingState().observe(this, new Observer<Boolean>() {

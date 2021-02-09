@@ -27,16 +27,15 @@ public class QuizActivityViewModel extends ViewModel {
 
     public QuizActivityViewModel() {
        repo = new Repository();
-        fetchQuestions();
     }
 
     public LiveData<Question> getQuestion(){
         return displayedQuestion;
     }
 
-    private void fetchQuestions(){
+    private void fetchQuestions(int stageID){
         loadingState.setValue(true);
-        repo.getQuestions(new Connectivity.ResponseHandler() {
+        repo.getQuestions(stageID,new Connectivity.ResponseHandler() {
             @Override
             public void handleResponse(ConnectionResponse response) {
                 loadingState.setValue(false);
@@ -62,6 +61,10 @@ public class QuizActivityViewModel extends ViewModel {
     public void nextQuestion() {
         Question question = questionManager.nextQuestion();
         displayedQuestion.setValue(question);
+    }
+
+    public void startQuiz(int stageId){
+        fetchQuestions(stageId);
     }
 
 
