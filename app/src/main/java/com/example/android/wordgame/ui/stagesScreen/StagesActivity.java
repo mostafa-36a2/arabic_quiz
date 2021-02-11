@@ -55,6 +55,7 @@ public class StagesActivity extends AppCompatActivity  {
                         intent.putExtra(QuizActivity.EXTRA_STAGE_ID,stage.getID());
                         startActivity(intent);
 
+
                     }
                 });
                 recyclerViewLevels.setAdapter(mAdapter);

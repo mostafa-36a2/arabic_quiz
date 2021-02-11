@@ -13,7 +13,8 @@
 
         android:theme="@style/AppTheme">
 
-        <activity android:name="com.example.android.wordgame.ui.MainActivity">
+        <activity android:name="com.example.android.wordgame.ui.MainActivity"
+            android:theme="@style/AppThemeNoCTIOBAE">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

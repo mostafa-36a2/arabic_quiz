@@ -3,8 +3,10 @@ package com.example.android.wordgame.ui.QuizScreen;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -33,6 +35,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewTimer;
     private ProgressBar loadingProgressBar;
     public static final String EXTRA_STAGE_ID = "extra.stage.id";
+    Handler handler = new Handler();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,20 +54,45 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
         int id = getIntent().getIntExtra(EXTRA_STAGE_ID,0);
         viewModel.startQuiz(id);
-    }
+
+        }
+
+
 
     @Override
     public void onClick(View view) {
         String answer = ((Button) view).getText().toString();
-
+        int color;
         boolean correct = viewModel.answerQuestion(answer);
         if (correct) {
             ToastMaker.showMessage(answer +"is : correct answer");
-        } else {
-            ToastMaker.showMessage(answer+" : wrong answer");
+             color = getResources().getColor(R.color.correctAnswer);
         }
-        viewModel.nextQuestion();
+        else {
+            ToastMaker.showMessage(answer +"is : wrong answer");
+           color = getResources().getColor(R.color.wrongAnswer);
+        }
+        view.setBackgroundColor(color);
+        run_codes();
     }
+
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                viewModel.nextQuestion();
+            }
+        };
+
+        public void run_codes () {
+            handler.postDelayed(runnable,2*1000);
+
+        }
+
+
+
+
+
+
 
     private void initialViewModel() {
         viewModel = new ViewModelProvider(this).get(QuizActivityViewModel.class);
@@ -154,6 +183,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showQuizEndDialog() {
+        //here
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.end_quiz_dialog, null, false);
         builder = builder.setView(dialogView);
@@ -172,6 +202,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             public void onClick(View view) {
                 Toast.makeText(QuizActivity.this, "not implemented yet", Toast.LENGTH_SHORT).show();
                 dialog.cancel();
+
             }
         });
 

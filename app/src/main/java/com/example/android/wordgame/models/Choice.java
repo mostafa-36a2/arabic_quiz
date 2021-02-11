@@ -2,11 +2,11 @@ package com.example.android.wordgame.models;
 
 public class Choice {
     private String choice;
-    private boolean isCorrect;
+    private String status;
 
     public Choice(String choice, boolean isCorrect) {
         this.choice = choice;
-        this.isCorrect = isCorrect;
+        this.status =(isCorrect?"1":"0");
     }
 
     public String getChoice() {
@@ -14,6 +14,6 @@ public class Choice {
     }
 
     public boolean isCorrect() {
-        return isCorrect;
+        return status.equals("1");
     }
 }
