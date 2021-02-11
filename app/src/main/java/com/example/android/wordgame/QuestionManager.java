@@ -22,7 +22,10 @@ public class QuestionManager {
         MyLogger.printAndStore("question was : "+getCurrentQuestion().getQuestion());
         return getCurrentQuestion().answer(answer);
     }
-    //ll
+
+    public int getCurrentQuestionScore(){
+        return getCurrentQuestion().getScore();
+    }
 
     public Question nextQuestion(){
         currentQuesIndex++;

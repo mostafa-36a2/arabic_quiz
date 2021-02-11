@@ -13,6 +13,16 @@ public class Question implements Cloneable{
     private List<Choice>choices;
     private int difficulty;
     private Language language;
+    private int score;
+    private int timer;
+
+    public int getScore() {
+        return score;
+    }
+
+    public int getTimer() {
+        return timer;
+    }
 
     public String getQuestion(){return this.question;}
 

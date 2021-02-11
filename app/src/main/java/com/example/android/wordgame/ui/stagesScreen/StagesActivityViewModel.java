@@ -28,22 +28,28 @@ public class StagesActivityViewModel extends ViewModel {
     private List<StageManager> stageManagers = new ArrayList<>();
     private MutableLiveData<Boolean> loadingProgressBar = new MutableLiveData<>();
     private MutableLiveData<String>errorMessage =new MutableLiveData<>();
-
-
+    private MutableLiveData<Integer>playerScore = new MutableLiveData<>();
+    private int processesWorking =0 ;
+    public LiveData<Integer> getPlayerScore() {
+        return playerScore;
+    }
 
     public StagesActivityViewModel() {
         repo = new Repository();
         fetchStages();
+        fetchTotalScore();
 
     }
 
     private void fetchStages(){
-        loadingProgressBar.setValue(true);
+        processesWorking++;
+        loadingProgressBar.setValue(processesWorking!= 0);
         Log.i(TAG, "fetchStages: progress bar is on");
          repo.getStages(new Connectivity.ResponseHandler() {
              @Override
              public void handleResponse(ConnectionResponse response) {
-                 loadingProgressBar.setValue(false);
+                 processesWorking--;
+                 loadingProgressBar.setValue(processesWorking!=0);
                  if(response.getResponse() != null) {
                      Gson gson = new Gson();
                      Log.i(TAG, "handleResponse: "+response.getResponse());
@@ -74,5 +80,16 @@ public class StagesActivityViewModel extends ViewModel {
 
     public LiveData<String> getErrorMessage() {
         return errorMessage;
+    }
+
+    private void fetchTotalScore(){
+        processesWorking++;
+        loadingProgressBar.setValue(processesWorking!=0);
+        repo.getPlayerTotalScore(1, new Connectivity.ResponseHandler() {
+            @Override
+            public void handleResponse(ConnectionResponse response) {
+                loadingProgressBar.setValue(--processesWorking!= 0);
+            }
+        });
     }
 }

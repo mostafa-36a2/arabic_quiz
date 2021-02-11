@@ -3,11 +3,9 @@ package com.example.android.wordgame.ui.QuizScreen;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
@@ -33,9 +31,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonChoiceD;
     private TextView questionTv;
     private TextView textViewTimer;
+    private TextView textViewScore;
     private ProgressBar loadingProgressBar;
     public static final String EXTRA_STAGE_ID = "extra.stage.id";
-    Handler handler = new Handler();
+    private Handler handler = new Handler();
 
 
     @Override
@@ -43,56 +42,49 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         ToastMaker.initialize(this, null);
         setContentView(R.layout.activity_quiz);
-        ToastMaker.initialize(this,null);
+        ToastMaker.initialize(this, null);
 
         setUpViews();
-        setTimer();
         initialViewModel();
         handleConnectionError();
         loadingHandling();
+        handleScoring();
         setQuestion();
 
-        int id = getIntent().getIntExtra(EXTRA_STAGE_ID,0);
+        int id = getIntent().getIntExtra(EXTRA_STAGE_ID, 0);
         viewModel.startQuiz(id);
 
-        }
-
+    }
 
 
     @Override
     public void onClick(View view) {
+
         String answer = ((Button) view).getText().toString();
         int color;
         boolean correct = viewModel.answerQuestion(answer);
         if (correct) {
-            ToastMaker.showMessage(answer +"is : correct answer");
-             color = getResources().getColor(R.color.correctAnswer);
-        }
-        else {
-            ToastMaker.showMessage(answer +"is : wrong answer");
-           color = getResources().getColor(R.color.wrongAnswer);
+            ToastMaker.showMessage(answer + "is : correct answer");
+            color = getResources().getColor(R.color.correctAnswer);
+        } else {
+            ToastMaker.showMessage(answer + "is : wrong answer");
+            color = getResources().getColor(R.color.wrongAnswer);
         }
         view.setBackgroundColor(color);
         run_codes();
     }
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                viewModel.nextQuestion();
-            }
-        };
-
-        public void run_codes () {
-            handler.postDelayed(runnable,2*1000);
-
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            viewModel.nextQuestion();
         }
+    };
 
+    public void run_codes() {
+        handler.postDelayed(runnable, 2 * 1000);
 
-
-
-
-
+    }
 
     private void initialViewModel() {
         viewModel = new ViewModelProvider(this).get(QuizActivityViewModel.class);
@@ -103,18 +95,23 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onChanged(Question question) {
                 if (question != null) {
-                    //TODO display the question
-                    MyLogger.printAndStore("ques : "+question.getQuestion());
+                    boolean correct;
+                    MyLogger.printAndStore("ques : " + question.getQuestion());
                     questionTv.setText(question.getQuestion());
-                    startTimer();
+                    startTimer(question.getTimer());
+                     correct  = question.getChoices().get(0).isCorrect();
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
+                    buttonChoiceA.setTag(correct);
                     buttonChoiceB.setText(question.getChoices().get(1).getChoice());
-                    if(question.getChoices().size() <3)return;
+                    correct  = question.getChoices().get(0).isCorrect();
+
+                    if (question.getChoices().size() < 3) return;
                     buttonChoiceC.setText(question.getChoices().get(2).getChoice());
                     buttonChoiceD.setText(question.getChoices().get(3).getChoice());
 
                 } else {
                     timer.cancel();
+                    viewModel.endQuiz();
                     textViewTimer.setText(String.valueOf(0));
                     showQuizEndDialog();
                 }
@@ -122,12 +119,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void loadingHandling(){
+    private void loadingHandling() {
         viewModel.getLoadingState().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loading) {
 
-                if(loading) {
+                if (loading) {
                     loadingProgressBar.setVisibility(View.VISIBLE);
                     buttonChoiceA.setVisibility(View.INVISIBLE);
                     buttonChoiceB.setVisibility(View.INVISIBLE);
@@ -136,7 +133,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     questionTv.setVisibility(View.INVISIBLE);
                     textViewTimer.setVisibility(View.INVISIBLE);
 
-                }else{
+                } else {
                     loadingProgressBar.setVisibility(View.INVISIBLE);
                     buttonChoiceA.setVisibility(View.VISIBLE);
                     buttonChoiceB.setVisibility(View.VISIBLE);
@@ -162,10 +159,16 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         questionTv = findViewById(R.id.textViewQuestion);
         textViewTimer = findViewById(R.id.textViewTimer);
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
+        textViewScore = findViewById(R.id.textViewScore);
     }
 
-    private void setTimer() {
-        timer = new CountDownTimer(10000, 1000) {
+
+    private void startTimer(int time) {
+
+        if (timer != null)
+            timer.cancel();
+
+        timer = new CountDownTimer(time * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 textViewTimer.setText("" + millisUntilFinished / 1000);
             }
@@ -175,10 +178,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 viewModel.nextQuestion();
             }
         };
-    }
 
-    private void startTimer() {
-        timer.cancel();
         timer.start();
     }
 
@@ -207,15 +207,23 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-
     }
 
-    private void handleConnectionError(){
+    private void handleConnectionError() {
         viewModel.getErrorMessage().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
                 ToastMaker.showMessage(s);
                 finish();
+            }
+        });
+    }
+
+    private void handleScoring(){
+        viewModel.getEarnedScore().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer score) {
+                textViewScore.setText(""+score+" point");
             }
         });
     }

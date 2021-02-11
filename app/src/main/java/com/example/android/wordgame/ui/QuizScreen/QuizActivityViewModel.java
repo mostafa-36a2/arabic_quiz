@@ -22,7 +22,13 @@ public class QuizActivityViewModel extends ViewModel {
     private MutableLiveData<Question> displayedQuestion = new MutableLiveData<>();
     private MutableLiveData<Boolean> loadingState = new MutableLiveData<>();
     private MutableLiveData<String> errorMessage = new MutableLiveData<>();
+    private MutableLiveData<Integer> earnedScoreMutableData = new MutableLiveData<>();
+    private int earnedScore = 0 ;
+    private int stageID;
 
+    public MutableLiveData<Integer> getEarnedScore() {
+        return earnedScoreMutableData;
+    }
 
 
     public QuizActivityViewModel() {
@@ -54,9 +60,25 @@ public class QuizActivityViewModel extends ViewModel {
     }
 
     public boolean answerQuestion(String answer) {
-        return questionManager.answerQuestion(answer);
+        boolean correct =  questionManager.answerQuestion(answer);
+        if(correct)
+        {
+            int score = questionManager.getCurrentQuestionScore();
+            earnedScore+=score;
+        }
+        return correct;
     }
 
+
+    public void endQuiz(){
+        //TODO player id is not set correctly
+        repo.postPlayerScore(1, stageID, earnedScore, new Connectivity.ResponseHandler() {
+            @Override
+            public void handleResponse(ConnectionResponse response) {
+
+            }
+        });
+    }
 
     public void nextQuestion() {
         Question question = questionManager.nextQuestion();
@@ -64,6 +86,7 @@ public class QuizActivityViewModel extends ViewModel {
     }
 
     public void startQuiz(int stageId){
+        this.stageID = stageId;
         fetchQuestions(stageId);
     }
 

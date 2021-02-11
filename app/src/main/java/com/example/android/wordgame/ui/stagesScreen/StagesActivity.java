@@ -26,6 +26,7 @@ public class StagesActivity extends AppCompatActivity  {
     private StagesActivityViewModel viewModel;
     private ProgressBar loadingProgressbar;
     private RecyclerView recyclerViewLevels;
+    private TextView textViewPlayerScore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,8 +35,10 @@ public class StagesActivity extends AppCompatActivity  {
         loadingProgressbar = findViewById(R.id.loadingProgressBar);
         ToastMaker.initialize(this,null);
         setUpRecycleView();
+        textViewPlayerScore = findViewById(R.id.textViewTotalScore);
         setUpViewModel();
         handleLoadingState();
+        handleSettingPlayerScore();
         handleConnectionError();
         setStages();
     }
@@ -90,5 +93,12 @@ public class StagesActivity extends AppCompatActivity  {
         });
     }
 
-
+    private void handleSettingPlayerScore(){
+        viewModel.getPlayerScore().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(Integer score) {
+                textViewPlayerScore.setText(""+score);
+            }
+        });
+    }
 }
