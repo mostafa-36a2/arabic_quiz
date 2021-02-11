@@ -9,6 +9,8 @@ import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -63,14 +65,20 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View view) {
         String answer = ((Button) view).getText().toString();
         int color;
+        Animation animaShake;
         boolean correct = viewModel.answerQuestion(answer);
         if (correct) {
             ToastMaker.showMessage(answer +"is : correct answer");
              color = getResources().getColor(R.color.correctAnswer);
+            animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            view.startAnimation(animaShake);
         }
         else {
             ToastMaker.showMessage(answer +"is : wrong answer");
            color = getResources().getColor(R.color.wrongAnswer);
+
+             animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            view.startAnimation(animaShake);
         }
         view.setBackgroundColor(color);
         run_codes();
@@ -89,11 +97,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         }
 
 
-
-
-
-
-
     private void initialViewModel() {
         viewModel = new ViewModelProvider(this).get(QuizActivityViewModel.class);
     }
@@ -109,15 +112,24 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     startTimer();
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
                     buttonChoiceB.setText(question.getChoices().get(1).getChoice());
+                    int color1 = getResources().getColor(R.color.PNG);
+                    buttonChoiceA.setBackgroundColor(color1);
+                    buttonChoiceB.setBackgroundColor(color1);
+
                     if(question.getChoices().size() <3)return;
                     buttonChoiceC.setText(question.getChoices().get(2).getChoice());
                     buttonChoiceD.setText(question.getChoices().get(3).getChoice());
+                    buttonChoiceC.setBackgroundColor(color1);
+                    buttonChoiceD.setBackgroundColor(color1);
 
-                } else {
+                }
+
+                else {
                     timer.cancel();
                     textViewTimer.setText(String.valueOf(0));
                     showQuizEndDialog();
                 }
+
             }
         });
     }

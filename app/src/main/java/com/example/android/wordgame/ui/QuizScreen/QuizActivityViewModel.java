@@ -25,6 +25,7 @@ public class QuizActivityViewModel extends ViewModel {
 
 
 
+
     public QuizActivityViewModel() {
        repo = new Repository();
     }
@@ -43,6 +44,7 @@ public class QuizActivityViewModel extends ViewModel {
                     MyLogger.printAndStore("response is : " + response);
                     questionManager = QuestionManager.build(response.getResponse());
                     nextQuestion();
+
 
                 }
                 else
