@@ -3,11 +3,9 @@ package com.example.android.wordgame.ui.QuizScreen;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -36,6 +34,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView questionTv;
     private TextView textViewTimer;
     private ProgressBar loadingProgressBar;
+    private static final int CORRECT_TAG =0;
     public static final String EXTRA_STAGE_ID = "extra.stage.id";
     Handler handler = new Handler();
 
@@ -45,7 +44,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         ToastMaker.initialize(this, null);
         setContentView(R.layout.activity_quiz);
-        ToastMaker.initialize(this,null);
+        ToastMaker.initialize(this, null);
 
         setUpViews();
         setTimer();
@@ -54,11 +53,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         loadingHandling();
         setQuestion();
 
-        int id = getIntent().getIntExtra(EXTRA_STAGE_ID,0);
+        int id = getIntent().getIntExtra(EXTRA_STAGE_ID, 0);
         viewModel.startQuiz(id);
 
-        }
-
+    }
 
 
     @Override
@@ -68,33 +66,65 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         Animation animaShake;
         boolean correct = viewModel.answerQuestion(answer);
         if (correct) {
-            ToastMaker.showMessage(answer +"is : correct answer");
-             color = getResources().getColor(R.color.correctAnswer);
-            animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            ToastMaker.showMessage(answer + "is : correct answer");
+            color = getResources().getColor(R.color.correctAnswer);
+            animaShake = AnimationUtils.loadAnimation(this, R.anim.fade_out);
             view.startAnimation(animaShake);
         }
         else {
-            ToastMaker.showMessage(answer +"is : wrong answer");
-           color = getResources().getColor(R.color.wrongAnswer);
+            ToastMaker.showMessage(answer + "is : wrong answer");
+            color = getResources().getColor(R.color.wrongAnswer);
 
-             animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
             view.startAnimation(animaShake);
+            mark_correct_ans();
         }
+
         view.setBackgroundColor(color);
         run_codes();
     }
 
-        Runnable runnable = new Runnable() {
-            @Override
-            public void run() {
-                viewModel.nextQuestion();
-            }
-        };
-
-        public void run_codes () {
-            handler.postDelayed(runnable,2*1000);
-
+    void mark_correct_ans() {
+        int color1;
+        boolean correct;
+        correct = (boolean)buttonChoiceA.getTag();
+        if(correct) {
+            color1 = getResources().getColor(R.color.correctAnswer);
+            buttonChoiceA.setBackgroundColor(color1);
         }
+
+        correct = (boolean)buttonChoiceB.getTag();
+        if(correct) {
+            color1 = getResources().getColor(R.color.correctAnswer);
+            buttonChoiceB.setBackgroundColor(color1);
+        }
+
+        correct = (boolean)buttonChoiceC.getTag();
+        if(correct) {
+            color1 = getResources().getColor(R.color.correctAnswer);
+            buttonChoiceC.setBackgroundColor(color1);
+        }
+
+        correct = (boolean)buttonChoiceD.getTag();
+        if(correct) {
+            color1 = getResources().getColor(R.color.correctAnswer);
+            buttonChoiceD.setBackgroundColor(color1);
+        }
+
+
+    }
+
+    Runnable runnable = new Runnable() {
+        @Override
+        public void run() {
+            viewModel.nextQuestion();
+        }
+    };
+
+    public void run_codes() {
+        handler.postDelayed(runnable, 2 * 1000);
+
+    }
 
 
     private void initialViewModel() {
@@ -105,26 +135,33 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         viewModel.getQuestion().observe(this, new Observer<Question>() {
             @Override
             public void onChanged(Question question) {
+                boolean correct;
                 if (question != null) {
                     //TODO display the question
-                    MyLogger.printAndStore("ques : "+question.getQuestion());
+                    MyLogger.printAndStore("ques : " + question.getQuestion());
                     questionTv.setText(question.getQuestion());
                     startTimer();
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
+                    correct = question.getChoices().get(0).isCorrect();
+                    buttonChoiceA.setTag(correct);
                     buttonChoiceB.setText(question.getChoices().get(1).getChoice());
+                    correct = question.getChoices().get(1).isCorrect();
+                    buttonChoiceB.setTag(correct);
                     int color1 = getResources().getColor(R.color.PNG);
                     buttonChoiceA.setBackgroundColor(color1);
                     buttonChoiceB.setBackgroundColor(color1);
 
-                    if(question.getChoices().size() <3)return;
+                    if (question.getChoices().size() < 3) return;
                     buttonChoiceC.setText(question.getChoices().get(2).getChoice());
+                    correct = question.getChoices().get(2).isCorrect();
+                    buttonChoiceC.setTag(correct);
                     buttonChoiceD.setText(question.getChoices().get(3).getChoice());
+                    correct = question.getChoices().get(3).isCorrect();
+                    buttonChoiceD.setTag(correct);
                     buttonChoiceC.setBackgroundColor(color1);
                     buttonChoiceD.setBackgroundColor(color1);
 
-                }
-
-                else {
+                } else {
                     timer.cancel();
                     textViewTimer.setText(String.valueOf(0));
                     showQuizEndDialog();
@@ -134,12 +171,12 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void loadingHandling(){
+    private void loadingHandling() {
         viewModel.getLoadingState().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean loading) {
 
-                if(loading) {
+                if (loading) {
                     loadingProgressBar.setVisibility(View.VISIBLE);
                     buttonChoiceA.setVisibility(View.INVISIBLE);
                     buttonChoiceB.setVisibility(View.INVISIBLE);
@@ -148,7 +185,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     questionTv.setVisibility(View.INVISIBLE);
                     textViewTimer.setVisibility(View.INVISIBLE);
 
-                }else{
+                } else {
                     loadingProgressBar.setVisibility(View.INVISIBLE);
                     buttonChoiceA.setVisibility(View.VISIBLE);
                     buttonChoiceB.setVisibility(View.VISIBLE);
@@ -219,10 +256,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         });
 
 
-
     }
 
-    private void handleConnectionError(){
+    private void handleConnectionError() {
         viewModel.getErrorMessage().observe(this, new Observer<String>() {
             @Override
             public void onChanged(String s) {
