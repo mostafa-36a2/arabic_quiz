@@ -15,9 +15,6 @@ public class MainActivityViewModel extends ViewModel {
         repo = new Repository();
     }
 
-    public int getPlayerScore(Context context){
-        int score = repo.getPlayerScore(context);
-        return score;
-    }
+
 
 }

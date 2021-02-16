@@ -26,13 +26,17 @@ public class QuizActivityViewModel extends ViewModel {
     private int earnedScore = 0 ;
     private int stageID;
 
-    public MutableLiveData<Integer> getEarnedScore() {
+    public MutableLiveData<Integer> getEarnedScoreMutableData() {
         return earnedScoreMutableData;
     }
 
+    public int getTotalEarnedScore(){
+        return earnedScore;
+    }
 
     public QuizActivityViewModel() {
        repo = new Repository();
+       earnedScoreMutableData.setValue(earnedScore);
     }
 
     public LiveData<Question> getQuestion(){
@@ -50,6 +54,7 @@ public class QuizActivityViewModel extends ViewModel {
                     questionManager = QuestionManager.build(response.getResponse());
                     nextQuestion();
 
+
                 }
                 else
                 {
@@ -65,6 +70,7 @@ public class QuizActivityViewModel extends ViewModel {
         {
             int score = questionManager.getCurrentQuestionScore();
             earnedScore+=score;
+            earnedScoreMutableData.setValue(earnedScore);
         }
         return correct;
     }

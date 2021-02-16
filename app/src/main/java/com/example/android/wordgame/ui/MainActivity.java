@@ -35,13 +35,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        setPlayerScore();
     }
 
-    private void setPlayerScore(){
-        int score =viewModel.getPlayerScore(this);
-        textViewPlayerScore.setText(""+score);
-    }
 
 
     private void initialViewModel() {

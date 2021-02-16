@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -34,7 +36,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private TextView textViewScore;
     private ProgressBar loadingProgressBar;
     public static final String EXTRA_STAGE_ID = "extra.stage.id";
-    private Handler handler = new Handler();
+    Handler handler = new Handler();
 
 
     @Override
@@ -50,7 +52,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         loadingHandling();
         handleScoring();
         setQuestion();
-
+        textViewScore = findViewById(R.id.textViewScore);
         int id = getIntent().getIntExtra(EXTRA_STAGE_ID, 0);
         viewModel.startQuiz(id);
 
@@ -59,16 +61,22 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-
         String answer = ((Button) view).getText().toString();
         int color;
+        Animation animaShake;
         boolean correct = viewModel.answerQuestion(answer);
         if (correct) {
             ToastMaker.showMessage(answer + "is : correct answer");
             color = getResources().getColor(R.color.correctAnswer);
+            animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            view.startAnimation(animaShake);
         } else {
             ToastMaker.showMessage(answer + "is : wrong answer");
             color = getResources().getColor(R.color.wrongAnswer);
+
+            animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            view.startAnimation(animaShake);
+            mark_correct_ans();
         }
         view.setBackgroundColor(color);
         run_codes();
@@ -86,6 +94,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
+
     private void initialViewModel() {
         viewModel = new ViewModelProvider(this).get(QuizActivityViewModel.class);
     }
@@ -94,27 +103,37 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         viewModel.getQuestion().observe(this, new Observer<Question>() {
             @Override
             public void onChanged(Question question) {
+                boolean correct;
                 if (question != null) {
-                    boolean correct;
                     MyLogger.printAndStore("ques : " + question.getQuestion());
                     questionTv.setText(question.getQuestion());
                     startTimer(question.getTimer());
-                     correct  = question.getChoices().get(0).isCorrect();
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
+                    correct = question.getChoices().get(0).isCorrect();
                     buttonChoiceA.setTag(correct);
                     buttonChoiceB.setText(question.getChoices().get(1).getChoice());
-                    correct  = question.getChoices().get(0).isCorrect();
+                    correct = question.getChoices().get(1).isCorrect();
+                    buttonChoiceB.setTag(correct);
+                    int color1 = getResources().getColor(R.color.PNG);
+                    buttonChoiceA.setBackgroundColor(color1);
+                    buttonChoiceB.setBackgroundColor(color1);
 
                     if (question.getChoices().size() < 3) return;
                     buttonChoiceC.setText(question.getChoices().get(2).getChoice());
+                    correct = question.getChoices().get(2).isCorrect();
+                    buttonChoiceC.setTag(correct);
                     buttonChoiceD.setText(question.getChoices().get(3).getChoice());
+                    correct = question.getChoices().get(3).isCorrect();
+                    buttonChoiceD.setTag(correct);
+                    buttonChoiceC.setBackgroundColor(color1);
+                    buttonChoiceD.setBackgroundColor(color1);
 
                 } else {
                     timer.cancel();
-                    viewModel.endQuiz();
                     textViewTimer.setText(String.valueOf(0));
                     showQuizEndDialog();
                 }
+
             }
         });
     }
@@ -159,7 +178,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         questionTv = findViewById(R.id.textViewQuestion);
         textViewTimer = findViewById(R.id.textViewTimer);
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
-        textViewScore = findViewById(R.id.textViewScore);
     }
 
 
@@ -178,18 +196,21 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 viewModel.nextQuestion();
             }
         };
-
         timer.start();
     }
 
+
+
     private void showQuizEndDialog() {
         //here
+        int earnedScore = viewModel.getTotalEarnedScore();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         View dialogView = getLayoutInflater().inflate(R.layout.end_quiz_dialog, null, false);
         builder = builder.setView(dialogView);
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
+        ((TextView)dialog.findViewById(R.id.textViewDialogMessage)).setText(""+earnedScore);
         dialogView.findViewById(R.id.buttonDialogHome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -219,13 +240,44 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    private void handleScoring(){
-        viewModel.getEarnedScore().observe(this, new Observer<Integer>() {
+    private void handleScoring() {
+        viewModel.getEarnedScoreMutableData().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer score) {
-                textViewScore.setText(""+score+" point");
+                textViewScore.setText("" + score + " point");
             }
         });
+    }
+
+
+    private void mark_correct_ans() {
+        int color1;
+        boolean correct;
+        correct = (boolean)buttonChoiceA.getTag();
+        if(correct) {
+            color1 = getResources().getColor(R.color.correctAnswer);
+            buttonChoiceA.setBackgroundColor(color1);
+        }
+
+        correct = (boolean)buttonChoiceB.getTag();
+        if(correct) {
+            color1 = getResources().getColor(R.color.correctAnswer);
+            buttonChoiceB.setBackgroundColor(color1);
+        }
+
+        correct = (boolean)buttonChoiceC.getTag();
+        if(correct) {
+            color1 = getResources().getColor(R.color.correctAnswer);
+            buttonChoiceC.setBackgroundColor(color1);
+        }
+
+        correct = (boolean)buttonChoiceD.getTag();
+        if(correct) {
+            color1 = getResources().getColor(R.color.correctAnswer);
+            buttonChoiceD.setBackgroundColor(color1);
+        }
+
+
     }
 
 }
