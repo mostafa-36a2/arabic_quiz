@@ -109,6 +109,8 @@ public class QuizActivityViewModel extends ViewModel {
 
     public void resetQuiz(){
         questionManager.resetQuestions();
+        earnedScore = 0;
+        earnedScoreMutableData.setValue(earnedScore);
         nextQuestion();
     }
 }

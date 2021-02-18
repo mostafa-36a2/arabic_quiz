@@ -53,7 +53,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         loadingHandling();
         handleScoring();
         setQuestion();
-        textViewQuestionScore = findViewById(R.id.textViewQuestionScore);
         int id = getIntent().getIntExtra(EXTRA_STAGE_ID, 0);
         viewModel.startQuiz(id);
 
@@ -91,6 +90,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     questionTv.setText(question.getQuestion());
                     if (question.getTimer() > 0)
                         startTimer(question.getTimer());
+                    textViewQuestionScore.setText("s :"+question.getScore());
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
                     correct = question.getChoices().get(0).isCorrect();
                     buttonChoiceA.setTag(correct);
@@ -100,7 +100,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     int color1 = getResources().getColor(R.color.PNG);
                     buttonChoiceA.setBackgroundColor(color1);
                     buttonChoiceB.setBackgroundColor(color1);
-                    textViewQuestionScore.setText("" + question.getScore());
 
                     if (question.getChoices().size() < 3) return;
                     buttonChoiceC.setText(question.getChoices().get(2).getChoice());
@@ -165,6 +164,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
         textViewQuestionScore = findViewById(R.id.textViewQuestionScore);
         textViewTotalScore = findViewById(R.id.textViewTotalScore);
+
 
     }
 
@@ -238,7 +238,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         viewModel.getEarnedScoreMutableData().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer score) {
-                textViewTotalScore.setText("" + score + "نقطة");
+                textViewTotalScore.setText("" + score );
             }
         });
     }

@@ -16,6 +16,9 @@ import com.example.android.wordgame.models.Stage;
 import com.example.android.wordgame.repositories.Repository;
 import com.google.gson.Gson;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -89,8 +92,17 @@ public class StagesActivityViewModel extends ViewModel {
         repo.getPlayerTotalScore(1, new Connectivity.ResponseHandler() {
             @Override
             public void handleResponse(ConnectionResponse response) {
+                int score = 0;
                 loadingProgressBar.setValue(--processesWorking!= 0);
-                //playerScore.setValue(Integer.valueOf(response.getResponse()));
+                JSONObject jsonObject = null;
+                try {
+                    jsonObject = new JSONObject(response.getResponse());
+                    score = jsonObject.getInt("score");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                playerScore.setValue(score);
                 MyLogger.printAndStore("total score is : " +response.getResponse());
             }
         });
