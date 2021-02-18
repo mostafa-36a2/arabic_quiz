@@ -65,6 +65,8 @@ public class QuizActivityViewModel extends ViewModel {
     }
 
     public boolean answerQuestion(String answer) {
+        if(answer == null)
+            return false;
         boolean correct =  questionManager.answerQuestion(answer);
         if(correct)
         {
@@ -103,5 +105,10 @@ public class QuizActivityViewModel extends ViewModel {
 
     public LiveData<String> getErrorMessage() {
         return errorMessage;
+    }
+
+    public void resetQuiz(){
+        questionManager.resetQuestions();
+        nextQuestion();
     }
 }

@@ -33,16 +33,17 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
     private Button buttonChoiceD;
     private TextView questionTv;
     private TextView textViewTimer;
-    private TextView textViewScore;
+    private TextView textViewQuestionScore;
+    private TextView textViewTotalScore;
+
     private ProgressBar loadingProgressBar;
     public static final String EXTRA_STAGE_ID = "extra.stage.id";
-    Handler handler = new Handler();
+    private Handler handler = new Handler();
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ToastMaker.initialize(this, null);
         setContentView(R.layout.activity_quiz);
         ToastMaker.initialize(this, null);
 
@@ -52,7 +53,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         loadingHandling();
         handleScoring();
         setQuestion();
-        textViewScore = findViewById(R.id.textViewScore);
+        textViewQuestionScore = findViewById(R.id.textViewQuestionScore);
         int id = getIntent().getIntExtra(EXTRA_STAGE_ID, 0);
         viewModel.startQuiz(id);
 
@@ -61,25 +62,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        String answer = ((Button) view).getText().toString();
-        int color;
-        Animation animaShake;
-        boolean correct = viewModel.answerQuestion(answer);
-        if (correct) {
-            ToastMaker.showMessage(answer + "is : correct answer");
-            color = getResources().getColor(R.color.correctAnswer);
-            animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
-            view.startAnimation(animaShake);
-        } else {
-            ToastMaker.showMessage(answer + "is : wrong answer");
-            color = getResources().getColor(R.color.wrongAnswer);
-
-            animaShake = AnimationUtils.loadAnimation(this, R.anim.shake);
-            view.startAnimation(animaShake);
-            mark_correct_ans();
-        }
-        view.setBackgroundColor(color);
-        run_codes();
+        answerQuestion(view);
     }
 
     Runnable runnable = new Runnable() {
@@ -94,7 +77,6 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-
     private void initialViewModel() {
         viewModel = new ViewModelProvider(this).get(QuizActivityViewModel.class);
     }
@@ -107,7 +89,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                 if (question != null) {
                     MyLogger.printAndStore("ques : " + question.getQuestion());
                     questionTv.setText(question.getQuestion());
-                    startTimer(question.getTimer());
+                    if (question.getTimer() > 0)
+                        startTimer(question.getTimer());
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
                     correct = question.getChoices().get(0).isCorrect();
                     buttonChoiceA.setTag(correct);
@@ -117,6 +100,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     int color1 = getResources().getColor(R.color.PNG);
                     buttonChoiceA.setBackgroundColor(color1);
                     buttonChoiceB.setBackgroundColor(color1);
+                    textViewQuestionScore.setText("" + question.getScore());
 
                     if (question.getChoices().size() < 3) return;
                     buttonChoiceC.setText(question.getChoices().get(2).getChoice());
@@ -129,7 +113,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     buttonChoiceD.setBackgroundColor(color1);
 
                 } else {
-                    timer.cancel();
+                    if (timer != null)
+                        timer.cancel();
                     textViewTimer.setText(String.valueOf(0));
                     showQuizEndDialog();
                 }
@@ -178,8 +163,10 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         questionTv = findViewById(R.id.textViewQuestion);
         textViewTimer = findViewById(R.id.textViewTimer);
         loadingProgressBar = findViewById(R.id.loadingProgressBar);
-    }
+        textViewQuestionScore = findViewById(R.id.textViewQuestionScore);
+        textViewTotalScore = findViewById(R.id.textViewTotalScore);
 
+    }
 
     private void startTimer(int time) {
 
@@ -193,13 +180,11 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
             public void onFinish() {
                 Toast.makeText(QuizActivity.this, "time is out", Toast.LENGTH_SHORT).show();
-                viewModel.nextQuestion();
+                answerQuestion(null);
             }
         };
         timer.start();
     }
-
-
 
     private void showQuizEndDialog() {
         //here
@@ -210,7 +195,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
-        ((TextView)dialog.findViewById(R.id.textViewDialogMessage)).setText(""+earnedScore);
+        ((TextView) dialog.findViewById(R.id.textViewDialogMessage)).setText("" + earnedScore);
         dialogView.findViewById(R.id.buttonDialogHome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -222,6 +207,15 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onClick(View view) {
                 Toast.makeText(QuizActivity.this, "not implemented yet", Toast.LENGTH_SHORT).show();
+                dialog.cancel();
+
+            }
+        });
+
+        dialogView.findViewById(R.id.buttonDialogRetry).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                viewModel.resetQuiz();
                 dialog.cancel();
 
             }
@@ -244,40 +238,57 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         viewModel.getEarnedScoreMutableData().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer score) {
-                textViewScore.setText("" + score + " point");
+                textViewTotalScore.setText("" + score + "نقطة");
             }
         });
     }
 
-
-    private void mark_correct_ans() {
-        int color1;
+    private void markCorrectAnswers() {
+        int correctColor = getResources().getColor(R.color.correctAnswer);
+        ;
         boolean correct;
-        correct = (boolean)buttonChoiceA.getTag();
-        if(correct) {
-            color1 = getResources().getColor(R.color.correctAnswer);
-            buttonChoiceA.setBackgroundColor(color1);
+        correct = (boolean) buttonChoiceA.getTag();
+        if (correct) {
+            buttonChoiceA.setBackgroundColor(correctColor);
         }
 
-        correct = (boolean)buttonChoiceB.getTag();
-        if(correct) {
-            color1 = getResources().getColor(R.color.correctAnswer);
-            buttonChoiceB.setBackgroundColor(color1);
+        correct = (boolean) buttonChoiceB.getTag();
+        if (correct) {
+            buttonChoiceB.setBackgroundColor(correctColor);
         }
 
-        correct = (boolean)buttonChoiceC.getTag();
-        if(correct) {
-            color1 = getResources().getColor(R.color.correctAnswer);
-            buttonChoiceC.setBackgroundColor(color1);
+        correct = (boolean) buttonChoiceC.getTag();
+        if (correct) {
+            buttonChoiceC.setBackgroundColor(correctColor);
         }
 
-        correct = (boolean)buttonChoiceD.getTag();
-        if(correct) {
-            color1 = getResources().getColor(R.color.correctAnswer);
-            buttonChoiceD.setBackgroundColor(color1);
+        correct = (boolean) buttonChoiceD.getTag();
+        if (correct) {
+            buttonChoiceD.setBackgroundColor(correctColor);
         }
 
 
+    }
+
+    private void answerQuestion(View view) {
+
+        String answer = ((Button) view).getText().toString();
+        int color;
+        Animation animShake;
+        boolean correct = viewModel.answerQuestion(answer);
+        if (correct) {
+            color = getResources().getColor(R.color.correctAnswer);
+            animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            view.startAnimation(animShake);
+        } else {
+            color = getResources().getColor(R.color.wrongAnswer);
+            animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
+            view.startAnimation(animShake);
+            markCorrectAnswers();
+        }
+
+        view.setBackgroundColor(color);
+        run_codes();
     }
 
 }

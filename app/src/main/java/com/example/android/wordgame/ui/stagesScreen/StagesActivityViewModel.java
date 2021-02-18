@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.alnamaa.arabic_quiz.MyLogger;
 import com.alnamaa.arabic_quiz.R;
 import com.example.android.wordgame.ConnectionResponse;
 import com.example.android.wordgame.Connectivity;
@@ -89,6 +90,8 @@ public class StagesActivityViewModel extends ViewModel {
             @Override
             public void handleResponse(ConnectionResponse response) {
                 loadingProgressBar.setValue(--processesWorking!= 0);
+                //playerScore.setValue(Integer.valueOf(response.getResponse()));
+                MyLogger.printAndStore("total score is : " +response.getResponse());
             }
         });
     }

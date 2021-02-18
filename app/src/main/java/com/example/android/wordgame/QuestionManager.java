@@ -80,4 +80,8 @@ public class QuestionManager {
         currentQuesIndex =-1;
     }
 
+    public void resetQuestions(){
+        currentQuesIndex = -1;
+    }
+
 }
