@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class Repository {
 
     private final static String questionURI = "https://follow.leafwaysco.com/arabic/query_question.php";
-    private final static String stagesURI = "https://follow.leafwaysco.com/arabic/stages.php";
+    private final static String getStagesURI = "https://follow.leafwaysco.com/arabic/stages.php";
     private final static String postPlayerScoreURI = "https://follow.leafwaysco.com/arabic/set_score.php";
     private final static String getPlayerScoreURI = "https://follow.leafwaysco.com/arabic/get_score.php";
 
@@ -26,7 +26,7 @@ public class Repository {
 
 
     public void getStages(Connectivity.ResponseHandler response) {
-        Connectivity.CommunicationWithAPI(stagesURI, null, response);
+        Connectivity.CommunicationWithAPI(getStagesURI, null, response);
     }
 
     public void getPlayerTotalScore(int userID, Connectivity.ResponseHandler responseHandler) {

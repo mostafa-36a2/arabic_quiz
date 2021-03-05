@@ -1,8 +1,10 @@
 package com.example.android.wordgame.ui.QuizScreen;
 
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -14,6 +16,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -22,6 +25,7 @@ import com.alnamaa.arabic_quiz.MyLogger;
 import com.alnamaa.arabic_quiz.R;
 import com.alnamaa.arabic_quiz.ToastMaker;
 import com.example.android.wordgame.models.Question;
+import com.example.android.wordgame.ui.stagesScreen.StagesActivity;
 
 public class QuizActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -61,7 +65,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(View view) {
-        answerQuestion(view);
+        String answer = ((Button)view).getText().toString();
+        answerQuestion(answer,view);
     }
 
     Runnable runnable = new Runnable() {
@@ -90,7 +95,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                     questionTv.setText(question.getQuestion());
                     if (question.getTimer() > 0)
                         startTimer(question.getTimer());
-                    textViewQuestionScore.setText("s :"+question.getScore());
+                    textViewQuestionScore.setText("" + question.getScore());
                     buttonChoiceA.setText(question.getChoices().get(0).getChoice());
                     correct = question.getChoices().get(0).isCorrect();
                     buttonChoiceA.setTag(correct);
@@ -116,6 +121,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
                         timer.cancel();
                     textViewTimer.setText(String.valueOf(0));
                     showQuizEndDialog();
+                    viewModel.endQuiz();
                 }
 
             }
@@ -179,8 +185,8 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
             }
 
             public void onFinish() {
-                Toast.makeText(QuizActivity.this, "time is out", Toast.LENGTH_SHORT).show();
-                answerQuestion(null);
+
+                answerQuestion("",null);
             }
         };
         timer.start();
@@ -195,7 +201,7 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         final Dialog dialog = builder.create();
         dialog.show();
         dialog.setCanceledOnTouchOutside(false);
-        ((TextView) dialog.findViewById(R.id.textViewDialogMessage)).setText("" + earnedScore);
+        ((TextView) dialog.findViewById(R.id.textViewTotalScore)).setText("" + earnedScore);
         dialogView.findViewById(R.id.buttonDialogHome).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -206,7 +212,9 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         dialogView.findViewById(R.id.buttonDialogNext).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(QuizActivity.this, "not implemented yet", Toast.LENGTH_SHORT).show();
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
                 dialog.cancel();
 
             }
@@ -238,14 +246,14 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
         viewModel.getEarnedScoreMutableData().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer score) {
-                textViewTotalScore.setText("" + score );
+                textViewTotalScore.setText("" + score);
             }
         });
     }
 
     private void markCorrectAnswers() {
         int correctColor = getResources().getColor(R.color.correctAnswer);
-        ;
+
         boolean correct;
         correct = (boolean) buttonChoiceA.getTag();
         if (correct) {
@@ -270,24 +278,26 @@ public class QuizActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void answerQuestion(View view) {
+    private void answerQuestion(String answer, @Nullable View view) {
 
-        String answer = ((Button) view).getText().toString();
         int color;
         Animation animShake;
         boolean correct = viewModel.answerQuestion(answer);
         if (correct) {
             color = getResources().getColor(R.color.correctAnswer);
             animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
-            view.startAnimation(animShake);
+            if (view != null)
+                view.startAnimation(animShake);
         } else {
             color = getResources().getColor(R.color.wrongAnswer);
             animShake = AnimationUtils.loadAnimation(this, R.anim.shake);
-            view.startAnimation(animShake);
+            if (view != null)
+                view.startAnimation(animShake);
             markCorrectAnswers();
         }
 
-        view.setBackgroundColor(color);
+        if (view != null)
+            view.setBackgroundColor(color);
         run_codes();
     }
 

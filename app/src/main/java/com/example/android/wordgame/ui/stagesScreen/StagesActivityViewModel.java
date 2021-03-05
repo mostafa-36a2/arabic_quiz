@@ -34,6 +34,9 @@ public class StagesActivityViewModel extends ViewModel {
     private MutableLiveData<String>errorMessage =new MutableLiveData<>();
     private MutableLiveData<Integer>playerScore = new MutableLiveData<>();
     private int processesWorking =0 ;
+
+    private int playingStageIndex = -1;
+
     public LiveData<Integer> getPlayerScore() {
         return playerScore;
     }
@@ -106,5 +109,13 @@ public class StagesActivityViewModel extends ViewModel {
                 MyLogger.printAndStore("total score is : " +response.getResponse());
             }
         });
+    }
+
+    public void setPlayingStageIndex(int playingStageIndex) {
+        this.playingStageIndex = playingStageIndex;
+    }
+
+    public int getPlayingStage(){
+        return playingStageIndex;
     }
 }

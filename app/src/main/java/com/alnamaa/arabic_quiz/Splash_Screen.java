@@ -14,7 +14,7 @@ import com.example.android.wordgame.ui.MainActivity;
 
 public class Splash_Screen extends AppCompatActivity {
     Handler handler = new Handler();
-    Button app_name;
+    TextView app_name;
     TextView version;
 
     @Override
@@ -25,7 +25,7 @@ public class Splash_Screen extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.splash_screen);
 
-        app_name = (Button) findViewById(R.id.app_name);
+        app_name =  findViewById(R.id.app_name);
         app_name.setText(R.string.app_name);
         version = (TextView) findViewById(R.id.version);
         version.setText(BuildConfig.VERSION_NAME);

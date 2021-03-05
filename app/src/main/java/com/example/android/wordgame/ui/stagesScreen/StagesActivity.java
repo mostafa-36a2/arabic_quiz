@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +28,9 @@ public class StagesActivity extends AppCompatActivity  {
     private ProgressBar loadingProgressbar;
     private RecyclerView recyclerViewLevels;
     private TextView textViewPlayerScore;
+    private StagesAdapter mAdapter;
+    public static int FLAG_START_NEXT_STAGE = 100;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +44,7 @@ public class StagesActivity extends AppCompatActivity  {
         handleLoadingState();
         handleSettingPlayerScore();
         handleConnectionError();
+
         setStages();
     }
 
@@ -51,13 +56,11 @@ public class StagesActivity extends AppCompatActivity  {
         viewModel.getStages().observe(this, new Observer<List<Stage>>() {
             @Override
             public void onChanged(List<Stage> stages) {
-                StagesAdapter mAdapter = new StagesAdapter(stages, new StagesAdapter.OnStageClickListener() {
+                mAdapter = new StagesAdapter(stages, new StagesAdapter.OnStageClickListener() {
                     @Override
                     public void stageClicked(Stage stage, int i) {
-                        Intent intent = new Intent(StagesActivity.this,QuizActivity.class);
-                        intent.putExtra(QuizActivity.EXTRA_STAGE_ID,stage.getID());
-                        startActivity(intent);
 
+                        clickingStage(stage,i);
 
                     }
                 });
@@ -68,7 +71,15 @@ public class StagesActivity extends AppCompatActivity  {
 
     private void setUpRecycleView(){
         recyclerViewLevels = findViewById(R.id.recyclerViewStages);
-        recyclerViewLevels.setLayoutManager(new GridLayoutManager(this,3));
+
+        GridLayoutManager layoutManager=new GridLayoutManager(this,3);
+        int spanCount = 3; // 3 columns
+        int spacing = 50; // 50px
+        boolean includeEdge = false;
+        recyclerViewLevels.setLayoutManager(layoutManager);
+
+        recyclerViewLevels.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+        //layoutManager.setReverseLayout(true);
 
     }
 
@@ -100,5 +111,64 @@ public class StagesActivity extends AppCompatActivity  {
                 textViewPlayerScore.setText(""+score);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 1
+        if(requestCode == FLAG_START_NEXT_STAGE)
+        {
+            if(data != null) {
+                int i = viewModel.getPlayingStage();
+                i++;
+                clickingStage(mAdapter.getStage(i), i);
+            }
+            //get the result
+        }
+    }
+
+    private void clickingStage(Stage stage ,int i){
+        Intent intent = new Intent(StagesActivity.this,QuizActivity.class);
+        intent.putExtra(QuizActivity.EXTRA_STAGE_ID,stage.getID());
+        viewModel.setPlayingStageIndex(i);
+        startActivityForResult(intent, FLAG_START_NEXT_STAGE);
+    }
+
+}
+
+class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
+
+    private int spanCount;
+    private int spacing;
+    private boolean includeEdge;
+
+    public GridSpacingItemDecoration(int spanCount, int spacing, boolean includeEdge) {
+        this.spanCount = spanCount;
+        this.spacing = spacing;
+        this.includeEdge = includeEdge;
+    }
+
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        int position = parent.getChildAdapterPosition(view); // item position
+        int column = position % spanCount; // item column
+
+        if (includeEdge) {
+            outRect.left = spacing - column * spacing / spanCount; // spacing - column * ((1f / spanCount) * spacing)
+            outRect.right = (column + 1) * spacing / spanCount; // (column + 1) * ((1f / spanCount) * spacing)
+
+            if (position < spanCount) { // top edge
+                outRect.top = spacing;
+            }
+            outRect.bottom = spacing; // item bottom
+        } else {
+            outRect.left = column * spacing / spanCount; // column * ((1f / spanCount) * spacing)
+            outRect.right = spacing - (column + 1) * spacing / spanCount; // spacing - (column + 1) * ((1f /    spanCount) * spacing)
+            if (position >= spanCount) {
+                outRect.top = spacing; // item top
+            }
+        }
     }
 }

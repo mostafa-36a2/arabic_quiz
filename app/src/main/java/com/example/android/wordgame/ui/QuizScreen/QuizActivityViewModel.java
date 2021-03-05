@@ -80,12 +80,13 @@ public class QuizActivityViewModel extends ViewModel {
 
     public void endQuiz(){
         //TODO player id is not set correctly
-        repo.postPlayerScore(1, stageID, earnedScore, new Connectivity.ResponseHandler() {
-            @Override
-            public void handleResponse(ConnectionResponse response) {
-
-            }
-        });
+        MyLogger.printAndStore("ending quiz posting : "+earnedScore+" score");
+//        repo.postPlayerScore(1, stageID, earnedScore, new Connectivity.ResponseHandler() {
+//            @Override
+//            public void handleResponse(ConnectionResponse response) {
+//
+//            }
+//        });
     }
 
     public void nextQuestion() {
@@ -113,4 +114,6 @@ public class QuizActivityViewModel extends ViewModel {
         earnedScoreMutableData.setValue(earnedScore);
         nextQuestion();
     }
+
+
 }
